@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南華大學校務資訊公開專區</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:root{
+  --red:#ae0105;          /* 校徽取樣 */
+  --ink:#1c1c1c; --sub:#6d6d6d; --line:#e8e8e8; --bg:#ffffff; --tint:#faf9f7;
+  --ok:#2f7d4f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);
+  line-height:1.8;padding-left:72px}
+a{color:var(--red);text-decoration:none}
+img{max-width:100%}
+
+/* ── 左側圖示導覽列（仿 global.hokudai.ac.jp）── */
+.rail{position:fixed;left:0;top:0;bottom:0;width:72px;background:#fff;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;padding:.5rem 0;gap:.1rem;z-index:60}
+.rail button, .rail a{display:flex;flex-direction:column;align-items:center;gap:.15rem;width:64px;
+  padding:.55rem 0;border:0;background:none;cursor:pointer;color:#555;font-size:.6rem;
+  font-family:inherit;border-radius:8px;text-decoration:none}
+.rail .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rail button:hover,.rail a:hover{background:#f4f4f4;color:var(--ink)}
+.rail a.on{color:var(--red);font-weight:500}
+.rail .burger{margin-bottom:.4rem}
+
+/* ── 全螢幕選單 ── */
+#menu{position:fixed;inset:0;background:rgba(255,255,255,.98);z-index:70;display:none;
+  overflow-y:auto;padding:2.2rem clamp(1.2rem,6vw,5rem)}
+#menu.open{display:block}
+#menu .close{position:absolute;top:1.2rem;right:1.4rem;font-size:1.6rem;border:0;background:none;cursor:pointer;color:var(--ink)}
+#menu h2{font-size:.85rem;letter-spacing:.25em;color:var(--red);margin:1.6rem 0 .5rem;font-weight:700}
+#menu .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 2.5rem}
+#menu a{display:block;color:var(--ink);padding:.34rem 0;border-bottom:1px solid var(--line);font-size:.95rem}
+#menu a:hover{color:var(--red)}
+
+/* ── 頂列 ── */
+.topbar{display:flex;align-items:center;gap:.9rem;padding:1rem clamp(1rem,4vw,2.4rem);
+  border-bottom:1px solid var(--line);background:#fff}
+.topbar img{height:46px;width:46px}
+.topbar .t1{font-weight:700;font-size:1.08rem;letter-spacing:.04em}
+.topbar .t2{font-size:.7rem;color:var(--sub);letter-spacing:.14em}
+.topbar .mburger{display:none;margin-left:auto;border:1px solid var(--line);background:#fff;
+  border-radius:8px;padding:.4rem .7rem;font-size:1.1rem;cursor:pointer}
+
+/* ── Hero ── */
+.hero{position:relative;height:52vh;min-height:330px;background:#111;overflow:hidden}
+.hero img.campus{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.62}
+.hero .grad{position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.35))}
+.hero .inner{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;
+  padding:0 clamp(1.2rem,6vw,4.5rem);color:#fff}
+.hero .big{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(3.4rem,9vw,6.5rem);
+  color:var(--red);line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.55),0 2px 14px rgba(0,0,0,.35);letter-spacing:.02em}
+.hero .big small{font-size:.32em;color:#fff;font-family:"Noto Sans TC",sans-serif;font-weight:500;margin-left:.5rem;letter-spacing:.08em}
+.hero .sub{margin-top:.8rem;font-size:.95rem;max-width:620px;color:#eee}
+.hero .cap{position:absolute;right:1.2rem;bottom:.9rem;font-size:.78rem;color:#ddd;letter-spacing:.1em}
+.hero .hint{position:absolute;left:1.2rem;bottom:.9rem;font-size:.7rem;color:#bbb}
+
+/* ── 內容 ── */
+main{min-height:55vh}
+.wrap{max-width:1060px;margin:0 auto;padding:2rem clamp(1rem,4vw,2rem) 3.5rem}
+.crumb{font-size:.78rem;color:var(--sub);margin-bottom:.5rem}
+.page-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.8rem;margin-bottom:1rem;
+  border-bottom:2px solid var(--ink);padding-bottom:.7rem}
+h1.page{font-size:1.55rem;font-weight:700;letter-spacing:.02em}
+h1.page::before{content:"";display:inline-block;width:.5em;height:.9em;background:var(--red);
+  margin-right:.5rem;transform:translateY(.08em)}
+.badge{font-size:.75rem;border:1px solid var(--line);color:var(--sub);border-radius:999px;padding:.1rem .7rem;margin-left:auto}
+
+/* 文字說明：≥14pt */
+.txt{background:var(--tint);border-left:4px solid var(--red);padding:1rem 1.3rem;margin:0 0 1.6rem}
+.txt p{font-size:14pt;line-height:1.95}
+.txt p+p{margin-top:.6rem}
+.srcnote{font-size:.76rem;color:var(--sub);margin-top:.6rem}
+
+section.blk{margin-bottom:2.4rem}
+section.blk>h2{font-size:1.1rem;font-weight:700;margin-bottom:.8rem;padding-left:.7rem;border-left:4px solid var(--red)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+
+/* 互動控制列（仿教育部統計處） */
+.ctrl{display:flex;flex-wrap:wrap;gap:.9rem 1.6rem;align-items:center;padding:.8rem 1rem;
+  background:var(--tint);border:1px solid var(--line);border-radius:10px;margin-bottom:.8rem;font-size:.85rem}
+.ctrl .g{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
+.ctrl .lab{color:var(--sub);margin-right:.15rem}
+.chip{border:1px solid #cfcfcf;border-radius:999px;padding:.12rem .75rem;cursor:pointer;user-select:none;background:#fff}
+.chip.on{border-color:var(--red);color:var(--red);background:#fdf3f3;font-weight:500}
+.chart{width:100%;height:340px}
+details.tbl{margin-top:.6rem}
+details.tbl summary{cursor:pointer;font-size:.82rem;color:var(--red)}
+a.dl{font-size:.78rem;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:.08rem .7rem}
+a.dl:hover{color:var(--red);border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.875rem;margin-top:.5rem}
+th{border-bottom:2px solid var(--ink);padding:.5rem .6rem;text-align:left;white-space:nowrap;font-weight:700}
+td{border-bottom:1px solid var(--line);padding:.45rem .6rem;font-variant-numeric:tabular-nums}
+td.neg{color:var(--red);font-weight:500}
+.tscroll{overflow-x:auto}
+
+/* KPI 進度條 */
+.kpirow{display:grid;grid-template-columns:minmax(170px,1.3fr) 3fr auto;gap:.9rem;align-items:center;
+  padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.bar{background:#eee;border-radius:999px;height:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:#c9a45c;width:0;transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.bar i.over{background:var(--ok)} .bar i.miss{background:var(--red)}
+.kv{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.84rem;color:var(--sub)}
+
+/* 首頁導覽卡 */
+.navcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-top:2rem}
+.navcard{background:#fff;padding:1.4rem 1.4rem 1.2rem;color:var(--ink)}
+.navcard:hover{background:var(--tint)}
+.navcard .no{font-size:.72rem;letter-spacing:.3em;color:var(--red)}
+.navcard h3{font-size:1.05rem;margin:.25rem 0 .35rem}
+.navcard p{font-size:.82rem;color:var(--sub)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.kpi{background:#fff;padding:1rem 1.2rem}
+.kpi .label{font-size:.8rem;color:var(--sub)}
+.kpi .num{font-family:"Noto Serif TC",serif;font-size:1.9rem;font-weight:900;font-variant-numeric:tabular-nums}
+.kpi .num.neg{color:var(--red)}
+.kpi .unit{font-size:.85rem;color:var(--sub);margin-left:.2rem}
+
+/* 第二層子導覽 */
+.subnav{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:40}
+.subnav .in{max-width:1060px;margin:0 auto;padding:.5rem clamp(1rem,4vw,2rem);display:flex;flex-wrap:wrap;gap:.4rem}
+.subnav a{font-size:.82rem;border:1px solid #d9d9d9;border-radius:999px;padding:.12rem .8rem;color:var(--ink)}
+.subnav a.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:500}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;border-top:1px solid var(--line);padding-top:1rem}
+.btn{font-size:.83rem;border:1px solid var(--ink);border-radius:999px;padding:.28rem 1rem;color:var(--ink);background:#fff}
+.btn:hover{background:var(--ink);color:#fff}
+.owner{font-size:.78rem;color:var(--sub)}
+.notice{border:1px dashed #cfcfcf;padding:1.1rem 1.3rem;font-size:14pt;line-height:1.9;background:var(--tint)}
+.form{display:grid;gap:.7rem;max-width:560px;font-size:.9rem}
+.form label{font-size:.82rem;color:var(--sub)}
+.form input,.form select,.form textarea{width:100%;padding:.55rem .7rem;border:1px solid #cfcfcf;border-radius:6px;font:inherit}
+.form button{justify-self:start;background:var(--red);color:#fff;border:0;border-radius:999px;padding:.5rem 1.5rem;font:inherit;cursor:pointer}
+.tl{border-left:2px solid var(--red);margin-left:.4rem;padding-left:1.4rem}
+.tl li{list-style:none;margin-bottom:1rem;position:relative;font-size:.95rem}
+.tl li::before{content:"";position:absolute;left:-1.72rem;top:.5em;width:9px;height:9px;border-radius:50%;background:var(--red)}
+.tl .yr{font-weight:700;color:var(--red);margin-right:.6rem}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:640px){.swot{grid-template-columns:1fr}}
+.swot div{background:#fff;padding:1rem 1.2rem;font-size:.92rem}
+.swot b{display:block;margin-bottom:.3rem}
+.swot .s b{color:var(--ok)} .swot .w b{color:var(--red)} .swot .o b{color:#2f5d8a} .swot .t b{color:#7a5c8a}
+
+footer{border-top:1px solid var(--line);padding:1.6rem clamp(1rem,4vw,2.4rem);font-size:.78rem;color:var(--sub);
+  display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
+footer img{height:34px;width:34px}
+
+@media(max-width:900px){
+  body{padding-left:0}
+  .rail{display:none}
+  .topbar .mburger{display:block}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<!-- 左側圖示導覽 -->
+<nav class="rail" aria-label="主要導覽">
+  <button class="burger" onclick="toggleMenu(true)" aria-label="開啟選單">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>選單</span></button>
+  <a href="#/" data-id="home"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 9.5V21h14V9.5"/></svg><span>首頁</span></a>
+  <a href="#/1-1" data-id="s1"><svg class="ic" viewBox="0 0 24 24"><path d="M4 21h16M6 21V8h12v13M6 8l6-5 6 5M10 12h1M13 12h1M10 16h1M13 16h1"/></svg><span>校務資訊</span></a>
+  <a href="#/2-1" data-id="s2"><svg class="ic" viewBox="0 0 24 24"><path d="M4 20h16M6 16l4-5 3 3 5-7"/></svg><span>財務資訊</span></a>
+  <a href="#/3-1" data-id="s3"><svg class="ic" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5L2 9zM6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5M22 9v6"/></svg><span>學雜費</span></a>
+  <a href="#/4-1" data-id="s4"><svg class="ic" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h6M9 17h6"/></svg><span>其他資訊</span></a>
+  <a href="#/5-1" data-id="s5"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3zM9 12l2 2 4-4"/></svg><span>內控內稽</span></a>
+  <a href="#/6-1" data-id="s6"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5zM8 9h8M8 12h5"/></svg><span>意見回饋</span></a>
+</nav>
+
+<!-- 全螢幕選單 -->
+<div id="menu" role="dialog" aria-label="網站選單">
+  <button class="close" onclick="toggleMenu(false)" aria-label="關閉選單">✕</button>
+  <div id="menuBody"></div>
+</div>
+
+<!-- 頂列 -->
+<header class="topbar">
+  <img src="logo.png" alt="南華大學校徽" onerror="this.style.display='none'">
+  <div>
+    <div class="t1">南華大學 校務資訊公開專區</div>
+    <div class="t2">NANHUA UNIVERSITY — SCHOOL AFFAIRS &amp; FINANCIAL DISCLOSURE</div>
+  </div>
+  <button class="mburger" onclick="toggleMenu(true)" aria-label="開啟選單">☰</button>
+</header>
+
+<div class="subnav" id="subnav" hidden><div class="in" id="subnavIn"></div></div>
+
+<main id="main"></main>
+
+<footer>
+  <img src="logo.png" alt="" onerror="this.style.display='none'">
+  <span>南華大學校務資訊公開專區｜依教育部「大專校院校務及財務資訊公開內容架構表」建置｜私立學校以學年度、決算書數據為基準｜示範資料標示者尚待正式數據替換</span>
+</footer>
+
+<script>
+/* =====================================================================
+   Google 試算表資料層
+   第一層＝一個試算表檔案；第二層＝檔案內的分頁（sheet）
+   ── 設定方式見「Google試算表維護手冊」──
+   試算表需設定「知道連結的使用者：檢視者」，將檔案 ID 貼入下方 CONFIG。
+   ID 留空或讀取失敗時，自動改用內嵌示範資料（頁面會標示 ⚠）。
+   ===================================================================== */
+/* 單一總表模式：全站資料集中於一份試算表，各第二層內容＝其中一個分頁。
+   換資料來源只需改 MASTER_ID；「文字說明」全站共用一個分頁（頁碼＋段落）。
+   日後若要拆回一大項一檔，把各 id 改成各自檔案 ID、並於各檔自建文字說明分頁即可。 */
+const MASTER_ID = '1Gz5NCBJhDkDgtwZJlbhytnVFy7EgQlyVZY6ZyRY6Fvo';
+/* 資料服務端點（Apps Script 網頁應用程式網址）。
+   填入後：網站改由此端點取得資料（單次請求取回全部分頁），
+   試算表本身即可改回「限制」不對外共用，外界無法開啟或下載原始檔。
+   部署步驟見維護手冊；未填或失效時退回 gviz（需試算表開放檢視）→ 再退回內嵌示範資料。 */
+const GAS_URL = '';
+const CONFIG = {
+  S1:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['沿革','學生人數','教職員人數','生師比','資源概況','招生就學','境外生','SWOT','特色主題','評鑑結果','畢業生流向','KPI','董事會財務','董事會收支','文字說明'] },
+  S2:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['收支總覽','收入','支出'] },
+  S3:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['收費與成本','支出估算','助學措施','助學統計'] },
+  S4:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['報告清單','採購案件','處分資產','資產報廢','設備效益','其他連結'] },
+  S5:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['文件清單','稽核清單'] },
+  S6:{ id:MASTER_ID, name:'意見回饋', sheets:['意見回應'] },
+};
+const LOADED = new Set();   // 已成功載入的「檔案:分頁」
+
+/* ── 內嵌示範資料（結構與 Google 試算表一致；標示※者為委員意見引用之實際數據）── */
+const DATA = {
+S1:{
+ '沿革':[['年代','大事紀'],
+  ['82年','佛光山星雲大師發起「百萬人興學」募款，籌設南華管理學院'],
+  ['85年','奉教育部核准立案招生，8月1日由創辦人星雲大師舉行開校啟教儀式，為「佛光山教團系統大學」在國內設立的第一所大學校院；完成第一行政教學大樓「成均館」、學生宿舍「文會樓」'],
+  ['86年','完成第二教學大樓「學海堂」、教職員宿舍「雲水居」、圖書館「無盡藏」及學生宿舍「麗澤樓」'],
+  ['88年','奉准升格為南華大學，創下國內學院升格大學的最短時間紀錄；設管理、人文及社會科學三學院'],
+  ['92年','新建完成第三教學大樓「學慧樓」'],
+  ['95年','增設科技學院與藝術學院，成為兼具管理、人文、社會、科技與藝術之綜合性大學'],
+  ['103年','入學新生全面比照國立大學收費；完成九品蓮花大道景觀工程'],
+  ['104年','完成 1,600 床位之「緣起樓」學生及單身職務宿舍'],
+  ['105年','完成 e 學苑及室外棒球場'],
+  ['106年','完成第四教學大樓「中道樓」'],
+  ['108年','完成「興學紀念館」'],
+  ['109年','完成室內綜合場館「正行中心」改建及「妙音樓」'],
+  ['111年','「三好教育園區」動工，預計 115 年度完工，館內將設「開山堂」、「校史館」及「三好廳」（可容納千人之國際會議中心）']],
+ '學生人數':[['學制','112學年度','113學年度','114學年度'],['大學部',3742,3471,3305],['研究所',540,555,550],['進修部',290,300,280],['在職專班',322,364,339]],
+ '教職員人數':[['類別','112學年度','113學年度','114學年度'],['專任教師',178,180,184],['兼任教師',249,252,258],['職員',149,147,145]],
+ '生師比':[['指標','112學年度','113學年度','114學年度'],['全校生師比',21.8,21.2,20.6],['日間學制生師比',19.5,19.1,18.7]],
+ '資源概況':[['指標','數值'],['每生校地面積','0.013 公頃'],['每生樓地板面積（校本部）','18.2 ㎡'],['圖書館藏書','約 62 萬冊'],['電子資料庫','86 種']],
+ '招生就學':[['指標（%）','112學年度','113學年度','114學年度'],['日間學士新生註冊率',88.44,88.06,90.40],['學生就學穩定率',85.60,88.18,83.99]],
+ '境外生':[['指標','112學年度','113學年度','114學年度'],['境外學位生人數',138,149,166]],
+ 'SWOT':[['面向','內容'],['S','生命教育與永續領域特色鮮明；佛光山教團系統大學資源共享；學雜費低於國立標準'],['W','學生人數逐年下滑；專任教師結構調整壓力；研究資源配置權重較低'],['O','跨校聯盟選課機制；永續議題國際能見度；境外生人數成長'],['T','少子女化衝擊；生成式 AI 對高教之結構性衝擊；私校競爭加劇']],
+ '特色主題':[['主題名稱','說明'],
+  ['生命教育','全國生死學研究重鎮，生命關懷融入通識與專業教育，以生命力帶動三好生命力'],
+  ['環境永續','深耕有機農業、食農教育與校園淨零，永續議題國際排名之核心量能'],
+  ['智慧創新','推動數位創新教學與 AI 融入課程，以學習力提升就業競爭力'],
+  ['三好校園','做好事、說好話、存好心；三好校園實踐學校—三好燈塔學校'],
+  ['慢食慢活與有機生產','多年推動慢食、慢活與有機生產，形塑在地永續生活圈之領導角色']],
+ '評鑑結果':[['年度','評鑑類別','結果','連結'],['112','校務評鑑（第三週期）','通過',''],['113','品保認可（院系所）','通過',''],['113','卓越經營品質獎','標竿獎','']],
+ '畢業生流向':[['學院','應追蹤','已追蹤','就業','升學','其他'],['人文學院',285,262,181,44,37],['社會科學院',240,221,168,29,24],['科技學院',310,290,231,35,24],['藝術學院',195,176,118,31,27],['管理學院',352,330,262,38,30]],
+ 'KPI':[['面向','指標名稱','單位','目標值','實際值'],['學生輔導及就業','畢業生就業率','%',95,95.88],['學生輔導及就業','雇主滿意度','%',85,88.85],['學生輔導及就業','學生平均取得專業證照','張',0.6,0.78],['教學','日間學士新生註冊率','%',88,90.4],['研究','教師期刊論文發表','篇',85,82],['學生輔導及就業','學生校外實習人次','人次',400,228]],
+ '董事會財務':[['項目','金額（千元）'],['專任董事薪酬',0],['無給職董事出席費／交通費',186],['監察人出席費／交通費',42]],
+ '董事會收支':[['日期','項目','收／支','金額（千元）'],['113-09','董事會捐資挹注校務基金 ※年約 2.8 億元','收入',280000],['114-01','董事會會議場地及行政支出','支出',128]],
+ '文字說明':[['頁碼','段落'],
+  ['1-1','【創校緣起】南華大學前身為南華管理學院，是佛光山星雲大師於民國 82 年發起「百萬人興學」募款而創設，於民國 85 年 4 月 1 日奉教育部核准立案招生，同年 8 月 1 日由創辦人星雲大師舉行開校啟教儀式，為「佛光山教團系統大學」於國內設立的第一所大學校院。'],
+  ['1-1','秉持星雲大師「懷具百年樹人之志、回饋十方感恩之心」的社會責任信念，本校在教學品質、教學環境、導師制度獎優扶弱及學生人格健全發展等方面均極為重視，並獲教育部肯定，奉准於民國 88 年 8 月 1 日升格為大學，創下國內學院升格大學的最短時間紀錄。'],
+  ['1-1','本校創校宗旨為「公義與公益」的大學。前四屆（85–88 學年度）學生均享學雜費全免之待遇；為持續回饋社會、嘉惠學子、獎優扶弱，並因應少子化危機，在董事會全力支持下，自 103 學年度起入學新生全面比照國立大學收費。'],
+  ['1-2','本校學術單位有 5 個學院、1 個通識教育中心、18 個學系、2 個學士學位學程、2 個進修學士班、20 個碩士班、1 個碩士學位學程、11 個碩士在職專班、1 個碩士在職學位學程及 2 個博士班；行政單位共有 13 個一級單位、45 個二級單位，並設置 4 個校級研究中心，致力發展學校特色。'],
+  ['1-5','本校以「生命價值的提昇與永續發展，培養慧道中流的南華人」為教育願景；自我基本定位為「生命關懷、公益公義、國際知名教學卓越大學」；實踐「以生命力帶動三好生命力、以學習力提升就業競爭力、以全球觀促進國際移動力」的教育理念。'],
+  ['1-5','以「飛躍南華、獎優扶弱、追求卓越、邁向國際」為辦學方針；以「生命教育、環境永續、智慧創新、三好校園」為辦學特色；並採取「優質教學、適性輔導、研發產學、永續環境、國際移動、身心靈產業」六大發展主軸策略，落實教育願景、自我定位與教育理念。'],
+  ['1-3','近三年全校學生人數為 4,894、4,690、4,474 人（112–114 學年度，實際數），受少子女化影響呈下降趨勢；學制別分布為示範估算，正式版請以校庫填報數據替換。'],
+  ['1-4','日間學士新生註冊率 112–114 學年度為 88.44%、88.06%、90.40%，就學穩定率為 85.60%、88.18%、83.99%，招生與留生成效穩定（獎補助審查委員肯定事項）。境外學位生 114 年達 166 人、較前一年成長 11.4%。'],
+  ['1-8','本頁指標與獎補助計畫書 KPI 逐項對應（回應審查意見）。綠色為達標、紅色為未達標；未達標項目不隱藏，改善對策如下：校外實習人次下滑，已規劃拓展在地合作機構並將實習納入課程模組；期刊論文推動 Mentor 制度並強化國際收錄期刊占比。（示範文字）'],
+  ['1-9','董事會財務資訊依規定公開專任董事薪酬、無給職董監事出席費與交通費，及每筆逾 10 萬元收支。']],
+},
+S2:{
+ '收支總覽':[['項目','111學年度','112學年度','113學年度'],['總收入',1982,1943,1905],['總支出',2011,1988,1952],['收支差額',-29,-45,-47]],
+ '收入':[['收入科目','111學年度','112學年度','113學年度'],['學雜費收入',1094,1046,998],['補助及捐贈收入',567,585,600],['推廣教育收入',127,132,137],['財務及其他收入',194,180,170]],
+ '支出':[['支出科目','111學年度','112學年度','113學年度'],['教學研究及訓輔支出',998,985,972],['行政管理支出',412,405,398],['獎助學金支出',290,286,281],['其他支出',311,312,301]],
+ '文字說明':[['頁碼','段落'],
+  ['2-1','本頁回應獎補助審查意見：收入與支出同畫面對比，直接呈現年度收支差額趨勢。近年學雜費收入受學生人數影響持續下滑，年度收支呈現短絀；學校以董事會穩定挹注（每年約 2.8 億元）及精準預算控管維持財務穩健。（金額為示範資料，請與會計室對稿後以決算書實數替換）'],
+  ['2-1','改善對策：開源（推廣教育、產學合作、境外招生）與節流（組織再造、能源管理）雙軌並進，並每年檢視收支結構調整情形。（示範文字）'],
+  ['2-2','私立學校收入表公開至第四級會計科目，本頁圖表為第三級示意，完整科目請由 Google 試算表下載。'],
+  ['2-3','私立學校支出表公開至第四級會計科目，本頁圖表為第三級示意，完整科目請由 Google 試算表下載。']],
+},
+S3:{
+ '收費與成本':[['學院','每生每學年學雜費（千元）','每生平均教學成本（千元）','學雜費占成本比'],['人文學院',49.6,168,0.295],['社會科學院',49.6,152,0.326],['科技學院',54.3,204,0.266],['藝術學院',53.1,215,0.247],['管理學院',49.6,148,0.335]],
+ '支出估算':[['項目','每學年估算（千元）'],['學雜費',50],['住宿費（校內雙人房）',22],['生活費（餐飲交通書籍）',96],['合計',168]],
+ '助學措施':[['類別','措施','提供單位'],['獎學金','成績優異獎學金、特殊才能獎學金','學校'],['助學金','弱勢學生助學計畫、緊急紓困金','政府／學校'],['貸款','就學貸款（利息補貼）','政府'],['工讀','校內學習型兼任助理','學校'],['民間','佛光山百萬人興學獎助','民間']],
+ '助學統計':[['項目','人數','占在學學生比','金額（千元）'],['就學貸款',892,0.199,58400],['各類獎助學金',1560,0.349,42300],['學雜費減免',743,0.166,21900]],
+ '文字說明':[['頁碼','段落'],
+  ['3-1','直接教學成本＝教學研究及訓輔支出＋獎助學金支出＋行政管理支出。本校推動低於國立大學標準之學雜費政策，並以「以學習取代工讀」多元補助兼顧獎優扶弱。（示範文字）']],
+},
+S4:{
+ '報告清單':[['學年度','文件','連結'],['113','會計師查核報告（含財務報表）',''],['113','決算書',''],['112','會計師查核報告（含財務報表）',''],['111','會計師查核報告（含財務報表）','']],
+ '採購案件':[['學年度','採購名稱','採購品項','辦理方式','得標廠商','採購金額（千元）','是否接受政府補助'],['113','智慧教室建置案','視聽及資訊設備','公開招標','○○科技股份有限公司',8520,'是'],['113','校園網路骨幹汰換','網路設備','公開招標','○○電信工程公司',4310,'是'],['112','圖書館空調系統更新','機電設備','公開招標','○○機電有限公司',6150,'否'],['112','學生宿舍消防改善','消防工程','公開招標','○○工程股份有限公司',3280,'否'],['111','體育館屋頂防水整修','營繕工程','公開招標','○○營造有限公司',2960,'否']],
+ '處分資產':[['學年度','資產項目','帳面金額（千元）','變賣淨收入（千元）','處分損益（千元）'],['112','報廢電腦教室設備（逾使用年限）',1860,120,-1740]],
+ '資產報廢':[['學年度','報廢項目','資產殘值（千元）']],
+ '設備效益':[['學年度','設備名稱','金額（千元）','年使用率／人次','教學應用說明'],['113','智慧教室（8 間）',8520,'教室排課使用率 82%','跨域課程與遠距共時教學使用（示範資料）'],['113','校園網路骨幹',4310,'全校日均連線 6,200 裝置','支撐數位學習平臺與雲端服務（示範資料）']],
+ '其他連結':[['項目','連結'],['性別平等教育委員會',''],['智慧財產權宣導',''],['安定就學專區',''],['永續報告書（BSI 第三方查證）','']],
+ '文字說明':[['頁碼','段落'],
+  ['4-3','回應審查意見：50 萬元以上資本門項目建立後效追蹤，「重大設備效益追蹤」表逐項公開使用率、教學應用頻率與受益情形，取代通用性陳述。']],
+},
+S5:{
+ '文件清單':[['文件','版本','連結'],['內部控制制度手冊','113 年修訂',''],['內部控制作業程序','113 年修訂',''],['稽核作業規範','112 年修訂','']],
+ '稽核清單':[['學年度','稽核計畫連結','稽核報告連結'],['113','',''],['112','',''],['111','','']],
+ '文字說明':[['頁碼','段落']],
+},
+S6:{
+ '意見回應':[['年月','身分','意見摘要','學校回應'],['115-06','在校學生','希望公開各系每學期實際開課清單','已於「開課與師資資訊」頁連結課程查詢系統'],['115-04','校友','建議增加畢業生薪資追蹤資訊','已納入畢業生流向頁改版規劃，預計下學年度揭露'],['115-03','學生家長','財務報表太專業，看不懂學校錢花去哪','已增設「收支總覽」頁，以圖表及白話說明呈現']],
+ '文字說明':[['頁碼','段落'],
+  ['6-1','本校建立多元回饋機制，徵詢教師、學生、職員、校友、家長、業者等利害關係人對校務及財務資訊公開之意見，並公開學校回應，形成完整留痕。']],
+},
+};
+
+/* ── Google 試算表載入（gviz JSON，不需 API 金鑰）── */
+async function gv(id, sheetName){
+  const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(sheetName)}`;
+  const r = await fetch(url); if(!r.ok) throw 0;
+  const t = await r.text();
+  const j = JSON.parse(t.substring(t.indexOf('{'), t.lastIndexOf('}')+1));
+  const headers = j.table.cols.map(c=>c.label||'');
+  const rows = j.table.rows.map(row=>row.c.map(c=>c==null?'':(c.v??'')));
+  return [headers, ...rows];
+}
+async function loadAll(){
+  if(GAS_URL){
+    try{
+      const r = await fetch(GAS_URL);
+      const j = await r.json();
+      for(const [name,tbl] of Object.entries(j)){
+        if(!Array.isArray(tbl) || !tbl.length) continue;
+        for(const [k,cfg] of Object.entries(CONFIG)){
+          if(cfg.sheets.includes(name)){ DATA[k][name]=tbl; LOADED.add(k+':'+name); }
+        }
+      }
+      if(LOADED.size) return;   // 資料服務成功即不再走 gviz
+    }catch(e){ /* 退回 gviz */ }
+  }
+  const jobs = [];
+  for(const [k,cfg] of Object.entries(CONFIG)){
+    if(!cfg.id) continue;
+    for(const s of cfg.sheets){
+      jobs.push(gv(cfg.id, s).then(tbl=>{ DATA[k][s]=tbl; LOADED.add(k+':'+s); }).catch(()=>{}));
+    }
+  }
+  await Promise.allSettled(jobs);
+}
+const sheet = (k,n)=> (DATA[k]||{})[n] || [];
+const rows  = (k,n)=> sheet(k,n).slice(1);
+const heads = (k,n)=> sheet(k,n)[0] || [];
+const texts = (k,page)=>{
+  const loaded = Object.keys(DATA).filter(f=>LOADED.has(f+':文字說明')).flatMap(f=>rows(f,'文字說明'));
+  const pool = loaded.length ? loaded : Object.keys(DATA).flatMap(f=>rows(f,'文字說明'));
+  return pool.filter(r=>String(r[0])===page).map(r=>String(r[1]||'')).filter(Boolean);
+};
+const yearsOf = (k,n)=> heads(k,n).slice(1).map(String);
+const lastYear = ()=> { const y=yearsOf('S1','學生人數'); return y[y.length-1]||''; };
+const pct = v => (typeof v==='number' && v<1 ? (v*100).toFixed(1)+'%' : v);
+const fmt = v => typeof v==='number' ? v.toLocaleString('zh-Hant') : v;
+const link = (u,l='PDF')=> u ? `<a href="${u}" target="_blank" rel="noopener">${l}</a>` : '—';
+const csvLink = n => GAS_URL
+  ? `<div style="margin-top:.35rem"><a class="dl" href="${GAS_URL}?csv=${encodeURIComponent(n)}">⬇ 下載本表資料（CSV）</a></div>` : '';
+const srcOf = (k,n)=> LOADED.has(k+':'+n)
+  ? `資料來源：本校校務資料庫（決算書及校庫填報數據）`
+  : `⚠ 資料服務未連接（${n}），顯示內嵌示範資料`;
+
+const PALETTE = ['#ae0105','#2b2b2b','#9a9a9a','#c9a45c','#5b7a99','#d9a9a9'];
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ANIM = reduced ? {animation:false} : {animationDuration:1000, animationEasing:'cubicOut'};
+
+/* ============ 互動圖表元件（跨年度／系列勾選、圖型切換） ============ */
+const INTER = {};
+let charts = [];
+function interactive(cid, o){ // o:{key,sheet,unit,type,percent,stack}
+  const ys = yearsOf(o.key,o.sheet), sers = rows(o.key,o.sheet).map(r=>String(r[0]));
+  INTER[cid] = INTER[cid] || {years:new Set(ys), sers:new Set(sers), type:o.type||'bar', o};
+  const st = INTER[cid]; st.o = o;
+  const chips = (list, set, kind)=> list.map(v=>
+    `<span class="chip ${set.has(v)?'on':''}" onclick="toggleChip('${cid}','${kind}','${v.replace(/'/g,"\\'")}')">${v}</span>`).join('');
+  return `
+  <div class="ctrl" role="group" aria-label="圖表控制">
+    <div class="g"><span class="lab">學年度</span>${chips(ys, st.years, 'y')}</div>
+    <div class="g"><span class="lab">項目</span>${chips(sers, st.sers, 's')}</div>
+    <div class="g"><span class="lab">圖型</span>
+      <span class="chip ${st.type==='bar'?'on':''}" onclick="setType('${cid}','bar')">長條</span>
+      <span class="chip ${st.type==='line'?'on':''}" onclick="setType('${cid}','line')">折線</span></div>
+  </div>
+  <div class="chart" id="${cid}"></div>
+  ${detailsOf(o.key,o.sheet)}`;
+}
+function detailsOf(k,n){
+  return `<details class="tbl"><summary>展開資料表格（無障礙等值內容）</summary>
+    <div class="tscroll"><table><thead><tr>${heads(k,n).map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows(k,n).map(r=>`<tr>${r.map(c=>`<td${String(c).startsWith('-')?' class="neg"':''}>${fmt(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table></div></details>${csvLink(n)}`;
+}
+function toggleChip(cid,kind,val){
+  const st=INTER[cid], set = kind==='y'?st.years:st.sers;
+  set.has(val)? (set.size>1 && set.delete(val)) : set.add(val);
+  refreshCtrl(cid); drawInter(cid);
+}
+function setType(cid,t){ INTER[cid].type=t; refreshCtrl(cid); drawInter(cid); }
+function refreshCtrl(cid){
+  const el=document.getElementById(cid); if(!el) return;
+  const holder=el.previousElementSibling; // .ctrl
+  const st=INTER[cid], o=st.o;
+  const ys=yearsOf(o.key,o.sheet), sers=rows(o.key,o.sheet).map(r=>String(r[0]));
+  const chips=(list,set,kind)=>list.map(v=>
+    `<span class="chip ${set.has(v)?'on':''}" onclick="toggleChip('${cid}','${kind}','${v.replace(/'/g,"\\'")}')">${v}</span>`).join('');
+  holder.innerHTML = `
+    <div class="g"><span class="lab">學年度</span>${chips(ys,st.years,'y')}</div>
+    <div class="g"><span class="lab">項目</span>${chips(sers,st.sers,'s')}</div>
+    <div class="g"><span class="lab">圖型</span>
+      <span class="chip ${st.type==='bar'?'on':''}" onclick="setType('${cid}','bar')">長條</span>
+      <span class="chip ${st.type==='line'?'on':''}" onclick="setType('${cid}','line')">折線</span></div>`;
+}
+function drawInter(cid){
+  const st=INTER[cid], o=st.o;
+  const ysAll=yearsOf(o.key,o.sheet);
+  const ys=ysAll.filter(y=>st.years.has(y));
+  const idx=ys.map(y=>ysAll.indexOf(y));
+  const sers=rows(o.key,o.sheet).filter(r=>st.sers.has(String(r[0])));
+  const opt={...ANIM,color:PALETTE,tooltip:{trigger:'axis'},legend:{bottom:0},
+    grid:{left:56,right:20,top:36,bottom:56},
+    xAxis:{type:'category',data:ys},
+    yAxis:{type:'value',scale:!!o.scale,splitLine:{lineStyle:{color:'#eee'}},
+      axisLabel:o.percent?{formatter:'{value}%'}:{}},
+    series:sers.map(r=>({name:String(r[0]),type:st.type,
+      data:idx.map(i=>r[i+1]),
+      ...(st.type==='bar'?{barMaxWidth:46,...(o.stack?{stack:'all'}:{})}
+                        :{smooth:true,symbolSize:9,lineStyle:{width:3},label:{show:sers.length<=2}})}))};
+  let c = echarts.getInstanceByDom(document.getElementById(cid));
+  if(!c){ c = echarts.init(document.getElementById(cid)); charts.push(c); }
+  c.setOption(opt, true);
+}
+
+/* ============ 選單 ============ */
+const NAV = [
+  {id:'home', label:'首頁'},
+  {id:'s1', label:'壹、校務資訊說明', pages:['1-1','1-2','1-3','1-4','1-5','1-6','1-7','1-8','1-9']},
+  {id:'s2', label:'貳、財務資訊分析', pages:['2-1','2-2','2-3']},
+  {id:'s3', label:'參、學雜費與就學補助', pages:['3-1','3-2','3-3','3-4','3-5']},
+  {id:'s4', label:'肆、學校其他重要資訊', pages:['4-1','4-2','4-3','4-4','4-5']},
+  {id:'s5', label:'伍、內控內稽執行情形', pages:['5-1','5-2']},
+  {id:'s6', label:'陸、意見回饋', pages:['6-1']},
+];
+const TITLES = {
+ '1-1':'學校沿革','1-2':'組織架構','1-3':'基本數據及趨勢','1-4':'招生與就學穩定',
+ '1-5':'學校特色與發展願景','1-6':'特色主題專區','1-7':'學校績效表現','1-8':'校務發展 KPI 達成情形','1-9':'董事會相關資訊',
+ '2-1':'收支總覽','2-2':'收入分析','2-3':'支出分析',
+ '3-1':'收費標準與教學成本','3-2':'在學教育支出估算','3-3':'助學措施','3-4':'助學申請統計','3-5':'學雜費調整專區',
+ '4-1':'預算編審程序','4-2':'會計師查核報告','4-3':'採購、資產處分與設備效益','4-4':'開課與師資資訊','4-5':'其他',
+ '5-1':'內部控制制度','5-2':'稽核計畫與報告','6-1':'意見回饋',
+};
+function toggleMenu(open){
+  const m=document.getElementById('menu');
+  if(open){
+    document.getElementById('menuBody').innerHTML = NAV.slice(1).map(s=>`
+      <h2>${s.label}</h2><div class="cols">${s.pages.map(p=>
+        `<a href="#/${p}" onclick="toggleMenu(false)">${TITLES[p]}</a>`).join('')}</div>`).join('');
+    m.classList.add('open');
+  } else m.classList.remove('open');
+}
+
+/* ============ 頁面共用 ============ */
+function pageShell({key, section, ref, fallbackDesc, bodyHTML, owner}){
+  const t = ref ? texts(ref.file, key) : [];
+  const descHTML = t.length ? t.map(p=>`<p>${p}</p>`).join('') : (fallbackDesc||'');
+  const src = ref ? srcOf(ref.file, ref.sheet) : '本頁為靜態內容';
+  return `<div class="wrap">
+    <div class="crumb">${section}｜${key}</div>
+    <div class="page-head"><h1 class="page">${TITLES[key]||''}</h1><span class="badge">更新至 ${lastYear()||'—'}</span></div>
+    ${descHTML?`<div class="txt">${descHTML}<div class="srcnote">※ ${src}</div></div>`:''}
+    ${bodyHTML}
+
+  </div>`;
+}
+function tbl(k,n,map,negCols=[]){
+  const body = rows(k,n).map(map || (r=>r.map(fmt)));
+  return `<div class="tscroll"><table><thead><tr>${heads(k,n).map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead>
+  <tbody>${body.map(r=>`<tr>${r.map((c,i)=>`<td${negCols.includes(i)&&String(c).startsWith('-')?' class="neg"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${csvLink(n)}`;
+}
+
+/* ============ 各頁 ============ */
+const PAGES = {
+
+home(){
+  const stu = rows('S1','學生人數');
+  const totalStu = stu.reduce((s,r)=>s+(+r[r.length-1]||0),0);
+  const bal = rows('S2','收支總覽');
+  const diffRow = bal.find(r=>String(r[0]).includes('差額'))||[];
+  const diff = diffRow[diffRow.length-1];
+  const reg = (rows('S1','招生就學')[0]||[]);
+  const regLast = reg[reg.length-1];
+  return `
+  <div class="hero">
+    <img class="campus" src="campus.jpg" alt="南華大學校景" onerror="this.remove()">
+    <div class="grad"></div>
+    <div class="inner">
+      <div class="big">${fmt(totalStu)}<small>${lastYear()}在學學生數</small></div>
+      <div class="sub">校務與財務，攤在陽光下。依教育部「大專校院校務及財務資訊公開內容架構表」公告，
+      各項數據以決算書為準、以學年度為基準，原始資料以 Google 試算表公開。</div>
+    </div>
+    <div class="hint">※ 校景照片命名 campus.jpg 置於網站資料夾即顯示</div>
+    <div class="cap">NANHUA UNIVERSITY</div>
+  </div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><div class="label">${lastYear()}在學學生</div><span class="num">${fmt(totalStu)}</span><span class="unit">人</span></div>
+      <div class="kpi"><div class="label">日間學士新生註冊率</div><span class="num">${regLast??'—'}</span><span class="unit">%</span></div>
+      <div class="kpi"><div class="label">最新學年度收支差額</div><span class="num${diff<0?' neg':''}">${fmt(diff)}</span><span class="unit">百萬元</span></div>
+    </div>
+    <div class="navcards">
+      ${NAV.slice(1).map(s=>`<a class="navcard" href="#/${s.pages[0]}">
+        <div class="no">${s.label.split('、')[0]}</div><h3>${s.label.split('、')[1]}</h3>
+        <p>${{s1:'沿革、基本數據、招生就學、特色願景、績效與 KPI、董事會資訊',
+              s2:'收支總覽、收入分析、支出分析（公開至第四級會計科目）',
+              s3:'收費標準、教學成本、教育支出估算與各項助學措施',
+              s4:'預算編審、會計師查核報告、重大採購與設備效益追蹤',
+              s5:'內部控制制度、近三年稽核計畫及稽核報告',
+              s6:'利害關係人意見徵詢、歷次意見與學校回應'}[s.id]}</p></a>`).join('')}
+    </div>
+  </div>`;
+},
+
+'1-1'(){ return pageShell({key:'1-1',section:'校務資訊說明',ref:{file:'S1',sheet:'沿革'},
+  fallbackDesc:'<p>學校創校迄今重要大事紀，時間軸由試算表維護，新增一列即新增一個節點。</p>',
+  bodyHTML:`<section class="blk"><ul class="tl">${rows('S1','沿革').map(r=>`<li><span class="yr">${r[0]}</span>${r[1]}</li>`).join('')}</ul></section>`,
+  owner:'秘書室'});},
+
+'1-2'(){ return pageShell({key:'1-2',section:'校務資訊說明',ref:{file:'S1',sheet:'文字說明'},
+  fallbackDesc:'',
+  bodyHTML:`<section class="blk"><h2>組織架構圖</h2>
+    <img src="https://nhuwebfile.nhu.edu.tw/UploadedFiles/2025/8/7d7fa206-ab73-4ca4-8a55-35729855688a.jpg"
+      alt="南華大學組織架構圖" style="width:100%;border:1px solid var(--line)"
+      onerror="this.outerHTML='<div style=&quot;text-align:center;color:var(--sub);padding:3rem 1rem;border:1px dashed #ccc&quot;>〔組織架構圖：請上傳 org.jpg 或確認校方檔案伺服器連線〕</div>'">
+  </section>`});},
+
+'1-3'(){
+  const html = pageShell({key:'1-3',section:'校務資訊說明',ref:{file:'S1',sheet:'學生人數'},
+    fallbackDesc:'<p>近年學生、教職員人數與生師比。可勾選學年度與項目進行跨年度比較。</p>',
+    bodyHTML:`
+    <section class="blk"><h2>學生人數（分學制，可跨年度比較）</h2>${interactive('i13a',{key:'S1',sheet:'學生人數',type:'bar',stack:true})}</section>
+    <section class="blk"><h2>教職員人數</h2>${interactive('i13b',{key:'S1',sheet:'教職員人數',type:'bar'})}</section>
+    <section class="blk"><h2>生師比</h2>${interactive('i13c',{key:'S1',sheet:'生師比',type:'line',scale:true})}</section>
+    <section class="blk"><h2>每生面積、圖書與設備資源</h2>${tbl('S1','資源概況')}</section>`});
+  setTimeout(()=>{drawInter('i13a');drawInter('i13b');drawInter('i13c');});
+  return html;
+},
+
+'1-4'(){
+  const html = pageShell({key:'1-4',section:'校務資訊說明',ref:{file:'S1',sheet:'招生就學'},
+    fallbackDesc:'<p>新生註冊率、就學穩定率與境外生趨勢。</p>',
+    bodyHTML:`
+    <section class="blk"><h2>新生註冊率與就學穩定率（%）</h2>${interactive('i14a',{key:'S1',sheet:'招生就學',type:'line',percent:true,scale:true})}</section>
+    <section class="blk"><h2>境外學位生人數</h2>${interactive('i14b',{key:'S1',sheet:'境外生',type:'bar'})}</section>`,
+    owner:'教務處／國際處'});
+  setTimeout(()=>{drawInter('i14a');drawInter('i14b');});
+  return html;
+},
+
+'1-5'(){
+  const sw = Object.fromEntries(rows('S1','SWOT').map(r=>[String(r[0]).toUpperCase(),r[1]]));
+  return pageShell({key:'1-5',section:'校務資訊說明',ref:{file:'S1',sheet:'SWOT'},
+    fallbackDesc:'<p>以「生命關懷、公益公義」為定位，邁向教學卓越大學；中長程重大資產支出規劃詳文字說明。</p>',
+    bodyHTML:`<section class="blk"><h2>SWOT 分析</h2><div class="swot">
+      <div class="s"><b>優勢 S</b>${sw.S||''}</div><div class="w"><b>劣勢 W</b>${sw.W||''}</div>
+      <div class="o"><b>機會 O</b>${sw.O||''}</div><div class="t"><b>威脅 T</b>${sw.T||''}</div></div></section>`});
+},
+
+'1-6'(){ return pageShell({key:'1-6',section:'校務資訊說明',ref:{file:'S1',sheet:'特色主題'},
+  fallbackDesc:'<p>以主題呈現學校在特定領域之領導性角色（回應審查意見）。</p>',
+  bodyHTML:`<div class="navcards" style="margin-top:0">${rows('S1','特色主題').map((r,i)=>`
+    <div class="navcard"><div class="no">主題 ${i+1}</div><h3>${r[0]}</h3><p>${r[1]||''}</p></div>`).join('')}</div>`});},
+
+'1-7'(){
+  const g = rows('S1','畢業生流向');
+  const html = pageShell({key:'1-7',section:'校務資訊說明',ref:{file:'S1',sheet:'畢業生流向'},
+    fallbackDesc:'<p>近三年評鑑結果與畢業生流向（追蹤畢業滿 1、3、5 年；本頁為滿 1 年學院彙總）。</p>',
+    bodyHTML:`
+    <section class="blk"><h2>畢業生流向（畢業滿 1 年）</h2><div class="chart" id="c17"></div>
+      <details class="tbl"><summary>展開資料表格（無障礙等值內容）</summary>
+      <div class="tscroll"><table><thead><tr><th>學院</th><th>應追蹤</th><th>已追蹤</th><th>追蹤率</th><th>就業</th><th>升學</th><th>其他</th></tr></thead>
+      <tbody>${g.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td>${(r[2]/r[1]*100).toFixed(1)}%</td><td>${fmt(r[3])}</td><td>${fmt(r[4])}</td><td>${fmt(r[5])}</td></tr>`).join('')}</tbody></table></div></details></section>
+    <section class="blk"><h2>近三年評鑑結果</h2>${tbl('S1','評鑑結果',r=>[r[0],r[1],r[2],link(r[3])])}</section>`,
+    owner:'校務發展組／職涯發展處'});
+  setTimeout(()=>{
+    const c = echarts.init(document.getElementById('c17')); charts.push(c);
+    c.setOption({...ANIM,color:[PALETTE[0],PALETTE[3],PALETTE[2]],tooltip:{trigger:'axis'},legend:{bottom:0},
+      grid:{left:52,right:18,top:34,bottom:56},
+      xAxis:{type:'category',data:g.map(r=>r[0])},
+      yAxis:{type:'value',splitLine:{lineStyle:{color:'#eee'}}},
+      series:[{name:'就業',type:'bar',stack:'a',data:g.map(r=>r[3])},
+              {name:'升學',type:'bar',stack:'a',data:g.map(r=>r[4])},
+              {name:'其他',type:'bar',stack:'a',data:g.map(r=>r[5]),barMaxWidth:52}]});
+  });
+  return html;
+},
+
+'1-8'(){
+  const kpi = rows('S1','KPI');
+  const rowsHTML = kpi.map(r=>{
+    const [dim,name,unit,target,actual]=r; const rate=actual/target*100;
+    const cls = rate>=100?'over':(rate>=90?'':'miss');
+    return `<div class="kpirow">
+      <div><b style="font-weight:500">${name}</b><br><span style="font-size:.76rem;color:var(--sub)">${dim}</span></div>
+      <div class="bar"><i data-w="${Math.min(rate,120)}" class="${cls}"></i></div>
+      <div class="kv">目標 ${target}${unit}｜實際 <b style="color:${rate>=100?'var(--ok)':'var(--red)'}">${actual}${unit}</b>（${rate.toFixed(0)}%）</div></div>`;}).join('');
+  const html = pageShell({key:'1-8',section:'校務資訊說明',ref:{file:'S1',sheet:'KPI'},
+    fallbackDesc:'<p>公開專區績效揭露與獎補助計畫書 KPI 逐項對應。</p>',
+    bodyHTML:`<section class="blk">${rowsHTML}</section>`});
+  setTimeout(()=>{document.querySelectorAll('.bar i').forEach(el=>{
+    requestAnimationFrame(()=>el.style.width = el.dataset.w+'%');})});
+  return html;
+},
+
+'1-9'(){ return pageShell({key:'1-9',section:'校務資訊說明',ref:{file:'S1',sheet:'董事會財務'},
+  fallbackDesc:'<p>董事名單經歷、捐助章程、董事會財務資訊與每筆逾 10 萬元收支。</p>',
+  bodyHTML:`
+  <section class="blk"><h2>董事會財務資訊</h2>${tbl('S1','董事會財務')}</section>
+  <section class="blk"><h2>每筆逾 10 萬元收支</h2>${tbl('S1','董事會收支')}</section>`,
+  owner:'董事會秘書處'});},
+
+'2-1'(){
+  const bal = rows('S2','收支總覽');
+  const find = s => (bal.find(r=>String(r[0]).includes(s))||[]).slice(1).map(Number);
+  const rev=find('收入'), exp=find('支出'), diff=find('差額');
+  const ys = yearsOf('S2','收支總覽');
+  const html = pageShell({key:'2-1',section:'財務資訊分析',ref:{file:'S2',sheet:'收支總覽'},
+    fallbackDesc:'<p>收入與支出同畫面對比，直接呈現年度收支差額趨勢（回應審查意見）。</p>',
+    bodyHTML:`<section class="blk"><h2>收支對比與差額趨勢</h2>
+      <div class="chart" id="c21" style="height:390px"></div>${detailsOf('S2','收支總覽')}</section>`,
+    owner:'會計室'});
+  setTimeout(()=>{
+    const c = echarts.init(document.getElementById('c21')); charts.push(c);
+    c.setOption({...ANIM,tooltip:{trigger:'axis'},legend:{bottom:0},
+      grid:{left:56,right:56,top:40,bottom:56},
+      xAxis:{type:'category',data:ys},
+      yAxis:[{type:'value',name:'百萬元',splitLine:{lineStyle:{color:'#eee'}}},
+             {type:'value',name:'差額',position:'right',splitLine:{show:false}}],
+      series:[
+        {name:'總收入',type:'bar',data:rev,itemStyle:{color:PALETTE[0]},barMaxWidth:44},
+        {name:'總支出',type:'bar',data:exp,itemStyle:{color:'#c9a45c'},barMaxWidth:44},
+        {name:'收支差額',type:'line',yAxisIndex:1,data:diff,symbolSize:10,
+         lineStyle:{width:3,color:'#2b2b2b'},itemStyle:{color:'#2b2b2b'},
+         label:{show:true,color:'#2b2b2b',fontWeight:'bold'}}]});
+  });
+  return html;
+},
+
+'2-2'(){ return finPage('2-2','收入'); },
+'2-3'(){ return finPage('2-3','支出'); },
+
+'3-1'(){ return pageShell({key:'3-1',section:'學雜費與就學補助',ref:{file:'S3',sheet:'收費與成本'},
+  fallbackDesc:'<p>各學院每生收費標準、平均教學成本與學雜費占成本比率。</p>',
+  bodyHTML:`<section class="blk">${tbl('S3','收費與成本',r=>[r[0],r[1],fmt(r[2]),pct(r[3])])}</section>`,
+  owner:'教務處／會計室'});},
+
+'3-2'(){ return pageShell({key:'3-2',section:'學雜費與就學補助',ref:{file:'S3',sheet:'支出估算'},
+  fallbackDesc:'<p>學生在學期間教育支出估算，供學生及家長及早進行財務規劃。</p>',
+  bodyHTML:`<section class="blk">${tbl('S3','支出估算')}</section>`, owner:'學務處'});},
+
+'3-3'(){ return pageShell({key:'3-3',section:'學雜費與就學補助',ref:{file:'S3',sheet:'助學措施'},
+  fallbackDesc:'<p>政府、學校與民間機構提供之各項助學措施。</p>',
+  bodyHTML:`<section class="blk">${tbl('S3','助學措施')}</section>`, owner:'學務處'});},
+
+'3-4'(){
+  const st = rows('S3','助學統計');
+  const html = pageShell({key:'3-4',section:'學雜費與就學補助',ref:{file:'S3',sheet:'助學統計'},
+    fallbackDesc:'<p>在校生申請就學貸款、獎助學金、學雜費減免之人數、比率與金額。</p>',
+    bodyHTML:`<section class="blk"><div class="chart" id="c34"></div>
+      <details class="tbl"><summary>展開資料表格（無障礙等值內容）</summary>
+      <div class="tscroll"><table><thead><tr>${heads('S3','助學統計').map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+      <tbody>${st.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${pct(r[2])}</td><td>${fmt(r[3])}</td></tr>`).join('')}</tbody></table></div></details></section>`,
+    owner:'學務處'});
+  setTimeout(()=>{
+    const c = echarts.init(document.getElementById('c34')); charts.push(c);
+    c.setOption({...ANIM,color:PALETTE,tooltip:{},grid:{left:120,right:60,top:20,bottom:30},
+      xAxis:{type:'value',splitLine:{lineStyle:{color:'#eee'}}},
+      yAxis:{type:'category',data:st.map(r=>r[0]).reverse()},
+      series:[{type:'bar',data:st.map(r=>r[1]).reverse(),barMaxWidth:34,label:{show:true,position:'right',formatter:'{c} 人'}}]});
+  });
+  return html;
+},
+
+'3-5'(){ return pageShell({key:'3-5',section:'學雜費與就學補助',ref:null,
+  fallbackDesc:'',
+  bodyHTML:`<div class="notice">本校 <b>115 學年度未申請調整學雜費</b>，依「專科以上學校學雜費收取辦法」規定，調整相關公告項目免公告。若日後申請調整，本頁將展開：調整後使用情況／調整理由與計算方法／校內審議程序與歷次會議紀錄。</div>`,
+  owner:'教務處'});},
+
+'4-1'(){ return pageShell({key:'4-1',section:'學校其他重要資訊',ref:null,
+  fallbackDesc:'<p>學校預算編審程序：單位提報 → 預算委員會審議 → 行政會議 → 董事會核定 → 報部。</p>',
+  bodyHTML:`<section class="blk" style="text-align:center;color:var(--sub);padding:2.5rem 1rem;border:1px dashed #ccc">〔預算編審流程圖置放區〕</section>`,
+  owner:'會計室'});},
+
+'4-2'(){ return pageShell({key:'4-2',section:'學校其他重要資訊',ref:{file:'S4',sheet:'報告清單'},
+  fallbackDesc:'<p>歷年會計師查核報告與決算書。本頁網址維持穩定，供教育部平台及外部連結引用。</p>',
+  bodyHTML:`<section class="blk">${tbl('S4','報告清單',r=>[r[0],r[1],link(r[2])])}</section>`, owner:'會計室'});},
+
+'4-3'(){
+  const scrap = rows('S4','資產報廢');
+  return pageShell({key:'4-3',section:'學校其他重要資訊',ref:{file:'S4',sheet:'採購案件'},
+    fallbackDesc:'<p>近三學年 100 萬元以上採購、資產處分與報廢逐筆公開；並揭露重大設備之後效追蹤。</p>',
+    bodyHTML:`
+    <section class="blk"><h2>100 萬元以上採購案件一覽</h2>${tbl('S4','採購案件',r=>[r[0],r[1],r[2],r[3],r[4],fmt(r[5]),r[6]])}</section>
+    <section class="blk"><h2>重大設備效益追蹤 ★</h2>${tbl('S4','設備效益',r=>[r[0],r[1],fmt(r[2]),r[3],r[4]])}</section>
+    <section class="blk"><h2>處分土地及重大資產</h2>${tbl('S4','處分資產',r=>[r[0],r[1],fmt(r[2]),fmt(r[3]),fmt(r[4])],[4])}</section>
+    <section class="blk"><h2>逾 100 萬元資產報廢</h2>${scrap.length?tbl('S4','資產報廢'):'<p style="color:var(--sub)">本期無報廢項目。</p>'}</section>`,
+    owner:'總務處'});
+},
+
+'4-4'(){ return pageShell({key:'4-4',section:'學校其他重要資訊',ref:null,
+  fallbackDesc:'',
+  bodyHTML:`<div class="notice">開課資料由課程系統即時維護，避免雙重維護造成資料不一致：<br>
+    <a class="btn" style="margin-top:.7rem;display:inline-block" href="#">→ 前往南華大學課程查詢系統（另開視窗）</a></div>`,
+  owner:'教務處'});},
+
+'4-5'(){ return pageShell({key:'4-5',section:'學校其他重要資訊',ref:{file:'S4',sheet:'其他連結'},
+  fallbackDesc:'<p>其他重要資訊（彈性揭露欄位）。</p>',
+  bodyHTML:`<section class="blk">${tbl('S4','其他連結',r=>[r[0],link(r[1],'前往')])}</section>`});},
+
+'5-1'(){ return pageShell({key:'5-1',section:'內控內稽執行情形',ref:{file:'S5',sheet:'文件清單'},
+  fallbackDesc:'<p>內部控制制度、作業程序、內部控制點及稽核作業規範。</p>',
+  bodyHTML:`<section class="blk">${tbl('S5','文件清單',r=>[r[0],r[1],link(r[2])])}</section>`, owner:'稽核室'});},
+
+'5-2'(){ return pageShell({key:'5-2',section:'內控內稽執行情形',ref:{file:'S5',sheet:'稽核清單'},
+  fallbackDesc:'<p>近三年稽核計畫及稽核報告。</p>',
+  bodyHTML:`<section class="blk"><div class="tscroll"><table><thead><tr><th>學年度</th><th>稽核計畫</th><th>稽核報告</th></tr></thead>
+  <tbody>${rows('S5','稽核清單').map(r=>`<tr><td>${r[0]}</td><td>${link(r[1])}</td><td>${link(r[2])}</td></tr>`).join('')}</tbody></table></div></section>`,
+  owner:'稽核室'});},
+
+'6-1'(){ return pageShell({key:'6-1',section:'意見回饋',ref:{file:'S6',sheet:'意見回應'},
+  fallbackDesc:'<p>利害關係人意見徵詢與學校回應公開留痕。</p>',
+  bodyHTML:`<div class="grid2">
+    <section class="blk"><h2>我要提供意見</h2>
+      <div class="form">
+        <div><label>身分別</label><select><option>在校學生</option><option>教職員</option><option>校友</option><option>學生家長</option><option>業界／廠商</option><option>一般民眾</option></select></div>
+        <div><label>意見內容</label><textarea rows="4" placeholder="想看到什麼資訊？哪裡看不懂？"></textarea></div>
+        <div><label>Email（選填，供回覆）</label><input type="email" placeholder="name@example.com"></div>
+        <button onclick="alert('樣板示意：正式版可改接 Google 表單，回應寫回試算表即公開')">送出意見</button>
+      </div></section>
+    <section class="blk"><h2>歷次意見與學校回應</h2>${tbl('S6','意見回應')}</section>
+  </div>`});},
+};
+
+function finPage(key, kind){
+  const dk='S2';
+  const cid = 'ifin_'+key;
+  const html = pageShell({key,section:'財務資訊分析',ref:{file:dk,sheet:kind},
+    fallbackDesc:`<p>近三年學校${kind}分析：各項${kind}占學校總${kind}比率，可跨年度比較。</p>`,
+    bodyHTML:`<section class="blk"><h2>${kind}結構跨年度比較（百萬元）</h2>${interactive(cid,{key:dk,sheet:kind,type:'bar'})}</section>`,
+    owner:'會計室'});
+  setTimeout(()=>drawInter(cid));
+  return html;
+}
+
+/* ============ 路由 ============ */
+function render(){
+  charts.forEach(c=>c.dispose()); charts=[];
+  const hash = location.hash.replace('#/','') || 'home';
+  const fn = PAGES[hash] || PAGES.home;
+  document.getElementById('main').innerHTML = fn();
+  const sec = hash==='home' ? 'home' : NAV.find(s=>s.pages&&s.pages.includes(hash))?.id;
+  document.querySelectorAll('.rail a').forEach(a=>a.classList.toggle('on', a.dataset.id===sec));
+  const s = NAV.find(x=>x.id===sec), sn = document.getElementById('subnav');
+  if(s && s.pages){
+    sn.hidden = false;
+    document.getElementById('subnavIn').innerHTML =
+      s.pages.map(p=>`<a href="#/${p}" class="${p===hash?'on':''}">${TITLES[p]}</a>`).join('');
+  } else sn.hidden = true;
+  scrollTo({top:0});
+}
+addEventListener('hashchange', render);
+addEventListener('resize', ()=>charts.forEach(c=>c.resize()));
+addEventListener('keydown', e=>{ if(e.key==='Escape') toggleMenu(false); });
+loadAll().finally(render);
+</script>
+</body>
+</html>
