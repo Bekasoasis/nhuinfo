@@ -60,6 +60,8 @@ img{max-width:100%}
 .hero .big{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(3.4rem,9vw,6.5rem);
   color:var(--red);line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.55),0 2px 14px rgba(0,0,0,.35);letter-spacing:.02em}
 .hero .big small{font-size:.32em;color:#fff;font-family:"Noto Sans TC",sans-serif;font-weight:500;margin-left:.5rem;letter-spacing:.08em;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.hero .big.txt{font-size:clamp(1.9rem,4.6vw,3.3rem);line-height:1.3;letter-spacing:.06em;text-shadow:0 1px 2px rgba(255,255,255,.3),0 2px 12px rgba(0,0,0,.45)}
+.hero .big.txt small{display:block;margin-left:0;margin-top:.35rem;font-size:.55em;letter-spacing:.12em}
 .hero .sub{margin-top:.8rem;font-size:.95rem;max-width:620px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.65)}
 .hero .cap{position:absolute;right:1.2rem;bottom:.9rem;font-size:.78rem;color:#ddd;letter-spacing:.1em}
 .hero .hint{position:absolute;left:1.2rem;bottom:.9rem;font-size:.7rem;color:#bbb}
@@ -223,7 +225,7 @@ footer img{height:34px;width:34px}
 
 <footer>
   <img src="logo.png" alt="" onerror="this.style.display='none'">
-  <span>南華大學校務資訊公開專區｜依教育部「大專校院校務及財務資訊公開內容架構表」建置｜私立學校以學年度、決算書數據為基準｜示範資料標示者尚待正式數據替換</span>
+  <span>南華大學校務資訊公開專區｜依教育部「大專校院校務及財務資訊公開內容架構表」建置｜私立學校以學年度、決算書數據為基準｜示範資料標示者尚待正式數據替換｜<b>build 20260918a</b></span>
 </footer>
 
 <script>
@@ -555,15 +557,16 @@ home(){
   /* 首頁文字由「文字說明」分頁控制（頁碼＝首頁）：
      第 1 列＝大字、第 2 列＝大字旁標籤、第 3 列起＝副文段落；未填則自動顯示預設 */
   const ht = texts('S1','首頁');
-  const big   = ht[0] || fmt(totalStu);
-  const label = ht[1] || `${lastYear()}在學學生數`;
+  const big   = ht[0] || '提升生命價值與永續發展';
+  const label = ht[1] || '培養慧道中流的南華人';
   const sub   = ht.slice(2).join('') || '依教育部「大專校院校務及財務資訊公開內容架構表」公告，各項數據以決算書為準、以學年度為基準，並提供各表 CSV 格式下載。';
+  const bigCls = /^[\d,\.\s]+$/.test(big) ? 'big' : 'big txt';
   return `
   <div class="hero">
     <img class="campus" src="campus.jpg" alt="南華大學校景" onerror="this.remove()">
     <div class="grad"></div>
     <div class="inner">
-      <div class="big">${big}<small>${label}</small></div>
+      <div class="${bigCls}">${big}<small>${label}</small></div>
       <div class="sub">${sub}</div>
     </div>
     <div class="cap">NANHUA UNIVERSITY</div>
