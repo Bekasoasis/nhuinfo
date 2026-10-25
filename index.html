@@ -6,9 +6,16 @@
 <title>南華大學校務資訊公開專區</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script><script>(function(){if(!window.echarts)return;const MIN=16,_i=echarts.init;
+const fx=o=>{if(!o||typeof o!=='object')return;for(const k of ['axisLabel','nameTextStyle','textStyle','label']){const t=o[k];if(t&&typeof t==='object'&&!Array.isArray(t)){if(!t.fontSize||t.fontSize<MIN)t.fontSize=MIN}}};
+const arr=v=>v==null?[]:Array.isArray(v)?v:[v];
+echarts.init=function(){const c=_i.apply(this,arguments),so=c.setOption.bind(c);c.setOption=function(o){if(o){o.textStyle=Object.assign({fontSize:MIN},o.textStyle);
+for(const k of ['xAxis','yAxis'])arr(o[k]).forEach(a=>{a.axisLabel=a.axisLabel||{};a.nameTextStyle=a.nameTextStyle||{};fx(a)});
+arr(o.legend).forEach(l=>{l.textStyle=l.textStyle||{};fx(l)});arr(o.tooltip).forEach(t=>{t.textStyle=t.textStyle||{};fx(t)});
+arr(o.series).forEach(s=>{if(s.label)fx(s);if(s.markLine&&s.markLine.label)fx(s.markLine)})}
+return so.apply(null,arguments)};return c}})();</script>
 <style>
-:root{--red:#2f8256;--red-d:#1f6140;--red-t:#e6f3ea;--neg:#b3261e;--ink:#1a1a1a;--sub:#5c5c5c;--line:#e1e9e2;--bg:#fff;--tint:#f3f8f2;--ok:#2f7d4f;--rail:76px}
+:root{--red:#2f8256;--red-d:#1f6140;--red-t:#e6f3ea;--neg:#b3261e;--ink:#1a1a1a;--sub:#5c5c5c;--line:#e1e9e2;--bg:#fff;--tint:#f3f8f2;--ok:#2f7d4f;--rail:92px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:"Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;padding-left:var(--rail);-webkit-font-smoothing:antialiased;text-wrap:pretty}
@@ -16,7 +23,7 @@ a{color:var(--red);text-decoration:none}a:hover{color:var(--red-d)}
 img{max-width:100%}
 :focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:.6rem 0;gap:.15rem;z-index:60}
-.rail button,.rail a{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2rem;width:64px;padding:.6rem 0;border:0;background:none;cursor:pointer;color:#555;font-size:.68rem;letter-spacing:.04em;font-family:inherit;border-radius:6px;text-decoration:none}
+.rail button,.rail a{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.2rem;width:84px;white-space:nowrap;padding:.6rem 0;border:0;background:none;cursor:pointer;color:#555;font-size:1rem;letter-spacing:.04em;font-family:inherit;border-radius:6px;text-decoration:none}
 .rail .ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .rail button:hover,.rail a:hover{background:var(--tint);color:var(--ink)}
 .rail a.on{color:var(--red);font-weight:700;background:var(--red-t)}
@@ -29,12 +36,12 @@ img{max-width:100%}
 #menuBody{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem 3rem;max-width:1200px}
 #menu h2{font-size:1rem;letter-spacing:.08em;color:var(--ink);margin:1.4rem 0 .4rem;padding-bottom:.5rem;border-bottom:2px solid var(--ink);font-weight:700}
 #menu .cols{display:block}
-#menu a{display:block;color:var(--ink);padding:.45rem 0;border-bottom:1px solid var(--line);font-size:.95rem}
+#menu a{display:block;color:var(--ink);padding:.45rem 0;border-bottom:1px solid var(--line);font-size:1rem}
 #menu a:hover{color:var(--red);padding-left:.3rem;transition:padding .15s}
 .topbar{display:flex;align-items:center;gap:1rem;padding:.9rem clamp(1rem,4vw,2.4rem);border-bottom:1px solid var(--line);background:#fff}
 .topbar img{height:46px;width:46px}
 .topbar .t1{font-weight:700;font-size:1.12rem;letter-spacing:.06em;line-height:1.4}
-.topbar .t2{font-size:.68rem;color:var(--sub);letter-spacing:.16em}
+.topbar .t2{font-size:1rem;color:var(--sub);letter-spacing:.16em}
 .topbar .mburger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:1.1rem;cursor:pointer}
 .hero{position:relative;height:56vh;min-height:360px;max-height:620px;background:#2a2421;overflow:hidden}
 .hero img.campus{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1}
@@ -43,51 +50,51 @@ img{max-width:100%}
 .hero .big{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(3.4rem,9vw,6.5rem);color:#fff;line-height:1.05;letter-spacing:.02em;text-shadow:0 2px 18px rgba(0,0,0,.35)}
 .hero .big::before{content:"";display:block;width:56px;height:5px;background:var(--red);margin-bottom:1.2rem}
 .hero .big,.hero .big small,.hero .sub,.hero .inner{background:transparent !important}
-.hero .big small{font-size:.32em;color:#fff;font-family:"Noto Sans TC",sans-serif;font-weight:500;margin-left:.5rem;letter-spacing:.08em}
+.hero .big small{font-size:max(16px,.32em);color:#fff;font-family:"Noto Sans TC",sans-serif;font-weight:500;margin-left:.5rem;letter-spacing:.08em}
 .hero .big.txt{font-size:clamp(2rem,4.8vw,3.5rem);line-height:1.3;letter-spacing:.06em}
-.hero .big.txt small{display:inline-block;margin:.8rem 0 0;font-size:.42em;letter-spacing:.14em;background:var(--red) !important;padding:.2rem .8rem;text-shadow:none}
+.hero .big.txt small{display:inline-block;margin:.8rem 0 0;font-size:max(16px,.42em);letter-spacing:.14em;background:#ae0105 !important;padding:.2rem .8rem;text-shadow:none}
 .hero .sub{margin-top:1.1rem;font-size:1rem;line-height:1.85;max-width:580px;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-.hero .cap{position:absolute;right:clamp(1.4rem,4vw,2.4rem);bottom:4.6rem;font-size:.72rem;color:rgba(255,255,255,.8);letter-spacing:.3em;writing-mode:vertical-rl}
+.hero .cap{position:absolute;right:clamp(1.4rem,4vw,2.4rem);bottom:4.6rem;font-size:1rem;color:rgba(255,255,255,.8);letter-spacing:.3em;writing-mode:vertical-rl}
 .hero .hint{display:none}
 main{min-height:55vh}
 .wrap{max-width:1100px;margin:0 auto;padding:2.4rem clamp(1.2rem,4vw,2.4rem) 4rem}
-.crumb{font-size:.78rem;color:var(--sub);margin-bottom:.4rem;letter-spacing:.06em}
+.crumb{font-size:1rem;color:var(--sub);margin-bottom:.4rem;letter-spacing:.06em}
 .page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:.8rem 1.2rem;margin-bottom:1.6rem;border-bottom:2px solid var(--ink);padding-bottom:.9rem}
 h1.page{flex:1 1 auto;min-width:0;text-wrap:wrap;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:700;letter-spacing:.04em;line-height:1.35}
 h1.page::before{content:"";display:inline-block;width:.42em;height:.95em;background:var(--red);margin-right:.55rem;transform:translateY(.1em)}
-.badge{font-size:.78rem;background:var(--tint);color:var(--sub);border-radius:4px;padding:.2rem .7rem;margin-left:auto;font-variant-numeric:tabular-nums}
+.badge{font-size:1rem;background:var(--tint);color:var(--sub);border-radius:4px;padding:.2rem .7rem;margin-left:auto;font-variant-numeric:tabular-nums}
 .txt{background:var(--tint);border-radius:6px;padding:1.4rem 1.7rem;margin:0 0 2.4rem}
 .txt p{font-size:14pt;line-height:1.95;max-width:46em}
 .txt p+p{margin-top:.8rem}
-.srcnote{font-size:.76rem;color:var(--sub);margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--line)}
+.srcnote{font-size:1rem;color:var(--sub);margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--line)}
 section.blk{margin-bottom:3rem}
 section.blk>h2{display:flex;align-items:center;gap:.6rem;font-size:1.18rem;font-weight:700;margin-bottom:1rem;letter-spacing:.03em}
 section.blk>h2::before{content:"";width:8px;height:8px;background:var(--red);flex:none}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.4rem}
 @media(max-width:860px){.grid2{grid-template-columns:1fr}}
-.ctrl{display:flex;flex-wrap:wrap;gap:.7rem 1.8rem;align-items:center;padding:.75rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:1rem;font-size:.84rem}
+.ctrl{display:flex;flex-wrap:wrap;gap:.7rem 1.8rem;align-items:center;padding:.75rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:1rem;font-size:1rem}
 .ctrl .g{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
-.ctrl .lab{color:var(--sub);margin-right:.3rem;font-size:.76rem;letter-spacing:.08em}
-.chip{border:1px solid #d6d2cd;border-radius:4px;padding:.18rem .7rem;cursor:pointer;user-select:none;background:#fff;transition:background .15s,border-color .15s}
+.ctrl .lab{color:var(--sub);margin-right:.3rem;font-size:1rem;letter-spacing:.08em}
+.chip{border:1px solid #d6d2cd;border-radius:4px;padding:.18rem .7rem;cursor:pointer;user-select:none;background:#fff;transition:background .15s,border-color .15s;white-space:nowrap;flex:none}
 .chip:hover{border-color:var(--ink)}
 .chip.on{border-color:var(--red);color:#fff;background:var(--red);font-weight:500}
 .chart{width:100%;height:360px}
 details.tbl{margin-top:.8rem}
-details.tbl summary{cursor:pointer;font-size:.82rem;color:var(--sub);display:inline-flex;gap:.4rem}
+details.tbl summary{cursor:pointer;font-size:1rem;color:var(--sub);display:inline-flex;gap:.4rem}
 details.tbl summary:hover{color:var(--red)}
-a.dl{display:inline-block;font-size:.78rem;color:var(--sub);border:1px solid var(--line);border-radius:4px;padding:.15rem .7rem}
+a.dl{display:inline-block;font-size:1rem;color:var(--sub);border:1px solid var(--line);border-radius:4px;padding:.15rem .7rem}
 a.dl:hover{color:var(--red);border-color:var(--red)}
-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.5rem}
-th{background:var(--tint);border-bottom:2px solid var(--ink);padding:.6rem .75rem;text-align:left;white-space:nowrap;font-weight:700;font-size:.84rem}
+table{width:100%;border-collapse:collapse;font-size:1rem;margin-top:.5rem}
+th{background:var(--tint);border-bottom:2px solid var(--ink);padding:.6rem .75rem;text-align:left;white-space:nowrap;font-weight:700;font-size:1rem}
 td{border-bottom:1px solid var(--line);padding:.6rem .75rem;font-variant-numeric:tabular-nums}
 tbody tr:hover td{background:#f7fbf6}
 td.neg{color:var(--neg);font-weight:700}
 .tscroll{overflow-x:auto}
-.kpirow{display:grid;grid-template-columns:minmax(170px,1.3fr) 3fr auto;gap:.9rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.kpirow{display:grid;grid-template-columns:minmax(170px,1.3fr) 3fr auto;gap:.9rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line);font-size:1rem}
 .bar{background:#eee;border-radius:2px;height:10px;overflow:hidden}
 .bar i{display:block;height:100%;background:#c9a45c;width:0;transition:width 1s cubic-bezier(.2,.7,.3,1)}
 .bar i.over{background:var(--ok)}.bar i.miss{background:var(--red)}
-.kv{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.84rem;color:var(--sub)}
+.kv{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:1rem;color:var(--sub)}
 .navcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2rem}
 .hero+.wrap .navcards{position:relative;z-index:2;margin-top:-4.4rem;box-shadow:0 10px 30px rgba(0,0,0,.06)}
 .navcard{position:relative;display:flex;flex-direction:column;background:#fff;padding:1.5rem 1.6rem 1.4rem;color:var(--ink);min-height:170px;transition:background .15s}
@@ -95,28 +102,28 @@ a.navcard::after{content:"→";position:absolute;right:1.4rem;top:1.3rem;color:v
 a.navcard:hover{background:var(--tint);color:var(--ink)}
 a.navcard:hover::after{transform:translateX(4px);color:var(--red)}
 a.navcard:hover h3{color:var(--red)}
-.navcard .no{font-size:.74rem;letter-spacing:.3em;color:var(--red);font-weight:700}
+.navcard .no{font-size:1rem;letter-spacing:.3em;color:var(--red);font-weight:700}
 .navcard h3{font-size:1.2rem;margin:.35rem 0 .5rem;letter-spacing:.03em;line-height:1.45}
-.navcard p{font-size:.86rem;color:var(--sub);line-height:1.75}
+.navcard p{font-size:1rem;color:var(--sub);line-height:1.75}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
 .kpi{background:#fff;padding:1rem 1.2rem}
-.kpi .label{font-size:.8rem;color:var(--sub)}
+.kpi .label{font-size:1rem;color:var(--sub)}
 .kpi .num{font-family:"Noto Serif TC",serif;font-size:1.9rem;font-weight:900;font-variant-numeric:tabular-nums}
 .kpi .num.neg{color:var(--neg)}
-.kpi .unit{font-size:.85rem;color:var(--sub);margin-left:.2rem}
+.kpi .unit{font-size:1rem;color:var(--sub);margin-left:.2rem}
 .subnav{border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(6px);position:sticky;top:0;z-index:40}
 .subnav .in{max-width:1100px;margin:0 auto;padding:0 clamp(1.2rem,4vw,2.4rem);display:flex;gap:1.6rem;overflow-x:auto;scrollbar-width:none}
 .subnav .in::-webkit-scrollbar{display:none}
-.subnav a{flex:none;font-size:.88rem;padding:.85rem 0 .75rem;border-bottom:2px solid transparent;color:var(--sub);white-space:nowrap}
+.subnav a{flex:none;font-size:1rem;padding:.85rem 0 .75rem;border-bottom:2px solid transparent;color:var(--sub);white-space:nowrap}
 .subnav a:hover{color:var(--ink)}
 .subnav a.on{border-bottom-color:var(--red);color:var(--ink);font-weight:700}
 .actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;border-top:1px solid var(--line);padding-top:1rem}
-.btn{font-size:.86rem;border:1px solid var(--ink);border-radius:4px;padding:.45rem 1.1rem;color:var(--ink);background:#fff}
+.btn{font-size:1rem;border:1px solid var(--ink);border-radius:4px;padding:.45rem 1.1rem;color:var(--ink);background:#fff}
 .btn:hover{background:var(--ink);color:#fff}
-.owner{font-size:.78rem;color:var(--sub)}
+.owner{font-size:1rem;color:var(--sub)}
 .notice{border:1px solid var(--line);border-radius:6px;padding:1.4rem 1.7rem;font-size:14pt;line-height:1.9;background:var(--tint)}
-.form{display:grid;gap:1rem;max-width:560px;font-size:.92rem}
-.form label{display:block;font-size:.8rem;color:var(--sub);margin-bottom:.3rem}
+.form{display:grid;gap:1rem;max-width:560px;font-size:1rem}
+.form label{display:block;font-size:1rem;color:var(--sub);margin-bottom:.3rem}
 .form input,.form select,.form textarea{width:100%;padding:.65rem .8rem;border:1px solid #cfcac4;border-radius:4px;font:inherit;background:#fff}
 .form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-t)}
 .form button{justify-self:start;background:var(--red);color:#fff;border:0;border-radius:4px;padding:.65rem 1.8rem;font:inherit;font-weight:500;cursor:pointer}
@@ -129,25 +136,25 @@ a.navcard:hover h3{color:var(--red)}
 @media(max-width:600px){.tl{margin-left:.4rem}.tl .yr{position:static;display:block;text-align:left;width:auto}}
 .swot{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
 @media(max-width:640px){.swot{grid-template-columns:1fr}}
-.swot div{background:#fff;padding:1.3rem 1.5rem;font-size:.95rem;line-height:1.85}
+.swot div{background:#fff;padding:1.3rem 1.5rem;font-size:1rem;line-height:1.85}
 .swot b{display:block;margin-bottom:.5rem;font-size:1.02rem}
 .org{--adm:#7ca254;--aca:#4a78b0;--ctr2:#e0912f}
 .orgchain{display:flex;flex-direction:column;align-items:center;margin-bottom:1.4rem}
 .orgchain .lvl{display:flex;align-items:center;gap:.8rem}
 .orgchain .box{border:2px solid var(--ink);background:#fff;padding:.25rem 1.6rem;font-weight:700;font-size:1rem}
-.orgchain .side{border:1px solid #999;background:#fff;padding:.15rem .8rem;font-size:.8rem;color:#333}
+.orgchain .side{border:1px solid #999;background:#fff;padding:.15rem .8rem;font-size:1rem;color:#333}
 .orgchain .vline{width:2px;height:16px;background:var(--ink)}
 .orgcols{display:grid;grid-template-columns:1.15fr 1.45fr .65fr;gap:1rem}
 @media(max-width:900px){.orgcols{grid-template-columns:1fr}}
 .ogcol{border:1px solid var(--line)}
 .ogcol h3{color:#fff;text-align:center;font-size:1rem;padding:.35rem}
 .ogcol.adm h3{background:var(--adm)}.ogcol.aca h3{background:var(--aca)}.ogcol.ctr h3{background:var(--ctr2)}
-.ogrow{display:grid;grid-template-columns:118px 1fr;border-top:1px solid var(--line);font-size:.85rem}
+.ogrow{display:grid;grid-template-columns:118px 1fr;border-top:1px solid var(--line);font-size:1rem}
 .ogrow:hover{background:#fbf8f2}
 .ogrow .n{padding:.4rem .5rem;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center}
 .adm .ogrow .n{background:#eef4e6;color:#3f5a26}.aca .ogrow .n{background:#e8eef6;color:#28466e}
 .ogrow .d{padding:.4rem .6rem;border-left:1px solid var(--line);display:flex;align-items:center}
-.ctr .cbox{border:1.5px solid var(--ctr2);color:#8a5514;text-align:center;font-weight:700;padding:.7rem .4rem;margin:.7rem .6rem;font-size:.9rem;background:#fff}
+.ctr .cbox{border:1.5px solid var(--ctr2);color:#8a5514;text-align:center;font-weight:700;padding:.7rem .4rem;margin:.7rem .6rem;font-size:1rem;background:#fff}
 @media (prefers-reduced-motion: no-preference){.org>*{opacity:0;transform:translateY(8px);animation:orgin .5s ease forwards}.org>*:nth-child(2){animation-delay:.15s}@keyframes orgin{to{opacity:1;transform:none}}#main>*{animation:fadein .35s ease}@keyframes fadein{from{opacity:0;transform:translateY(6px)}}}
 .swot .s b{color:var(--ok)}.swot .w b{color:var(--red)}.swot .o b{color:#2f5d8a}.swot .t b{color:#7a5c8a}
 .flow{list-style:none;display:grid;max-width:640px;margin:.4rem 0 0}
@@ -156,19 +163,19 @@ a.navcard:hover h3{color:var(--red)}
 .flow li:not(:last-child)::before{content:"";position:absolute;left:21px;bottom:2px;border-left:7.5px solid transparent;border-right:7.5px solid transparent;border-top:10px solid var(--ink)}
 .flow .fn{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:1.05rem;font-variant-numeric:tabular-nums;position:relative;z-index:1}
 .flow .fb{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:60px;border:2px solid var(--ink);background:#fff;padding:.8rem 1.3rem;font-size:1.18rem;font-weight:700;line-height:1.5;letter-spacing:.03em;box-shadow:4px 4px 0 var(--line)}
-.flow .fb small{flex:none;font-size:.72rem;font-weight:700;letter-spacing:.12em;padding:.15rem .55rem;border:1.5px solid currentColor;border-radius:3px}
+.flow .fb small{flex:none;font-size:1rem;font-weight:700;letter-spacing:.12em;padding:.15rem .55rem;border:1.5px solid currentColor;border-radius:3px}
 .flow li.start .fb{border-radius:999px;background:var(--tint)}
 .flow li.end .fn{background:var(--red)}
 .flow li.end .fb{border-radius:999px;background:var(--red);border-color:var(--red);color:#fff;box-shadow:4px 4px 0 var(--red-t)}
 .flow li.end{padding-bottom:0}
-@media(max-width:600px){.flow li{grid-template-columns:44px minmax(0,1fr);gap:.8rem}.flow .fn{width:44px;height:44px;font-size:.9rem}.flow li:not(:last-child)::after{left:21px;top:44px}.flow li:not(:last-child)::before{left:15px}.flow .fb{font-size:1.02rem;padding:.7rem 1rem}}
+@media(max-width:600px){.flow li{grid-template-columns:44px minmax(0,1fr);gap:.8rem}.flow .fn{width:44px;height:44px;font-size:1rem}.flow li:not(:last-child)::after{left:21px;top:44px}.flow li:not(:last-child)::before{left:15px}.flow .fb{font-size:1.02rem;padding:.7rem 1rem}}
 .cyc{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.6rem;margin-top:.4rem}
 .cyc li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;border:2px solid var(--ink);background:#fff;padding:1.3rem 1rem 1.2rem;box-shadow:4px 4px 0 var(--line);min-height:210px}
 .cyc li:hover{border-color:var(--red);box-shadow:4px 4px 0 var(--red-t)}
 .cyc .ci{width:72px;height:72px;border-radius:50%;background:var(--tint);display:grid;place-items:center;margin-bottom:.2rem}
 .cyc .ci svg{width:38px;height:38px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .cyc li:hover .ci{background:var(--red)}.cyc li:hover .ci svg{stroke:#fff}
-.cyc .cn{font-size:.8rem;font-weight:700;letter-spacing:.2em;color:var(--red);font-variant-numeric:tabular-nums}
+.cyc .cn{font-size:1rem;font-weight:700;letter-spacing:.2em;color:var(--red);font-variant-numeric:tabular-nums}
 .cyc .ct{font-size:1.08rem;font-weight:700;line-height:1.55;letter-spacing:.02em}
 .cyc li::after{content:"";position:absolute;width:0;height:0;border:9px solid transparent}
 .cyc .c1,.cyc .c2,.cyc .c3{}
@@ -178,58 +185,90 @@ a.navcard:hover h3{color:var(--red)}
 .cyc .c5{grid-column:4}.cyc .c6{grid-column:3}.cyc .c7{grid-column:2}.cyc .c8{grid-column:1}
 .cyc .c5::after,.cyc .c6::after,.cyc .c7::after{left:-1.95rem;top:50%;margin-top:-9px;border-right:12px solid var(--ink);border-left:0}
 .cyc .c8::after{top:-2.05rem;left:50%;margin-left:-9px;border-bottom:12px solid var(--red);border-top:0}
-.cyc-note{margin-top:1.2rem;font-size:.86rem;color:var(--sub)}
+.cyc-note{margin-top:1.2rem;font-size:1rem;color:var(--sub)}
 @media(max-width:900px){.cyc{grid-template-columns:repeat(2,minmax(0,1fr))}.cyc li{grid-row:auto!important;grid-column:auto!important;min-height:0}.cyc li::after{display:none}}
 @media(max-width:520px){.cyc{grid-template-columns:1fr;gap:1rem}.cyc li{flex-direction:row;text-align:left;padding:.9rem 1rem;gap:.9rem}.cyc .ci{width:52px;height:52px;flex:none;margin:0}.cyc .ci svg{width:28px;height:28px}.cyc .cn{flex:none}}
 .rel{list-style:none;border-top:2px solid var(--ink)}
 .rel a{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem .2rem;border-bottom:1px solid var(--line);color:var(--ink);font-size:1.02rem;font-weight:500;line-height:1.6}
 .rel a b{flex:none;width:36px;height:36px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:50%;font-weight:400;transition:background .15s,color .15s}
 .rel a:hover{color:var(--red)}.rel a:hover b{background:var(--red);border-color:var(--red);color:#fff}
-.dstat{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;font-size:.8rem;color:var(--ink)}
+.dstat{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;font-size:1rem;color:var(--ink)}
 .dstat i{width:8px;height:8px;border-radius:50%;background:#bbb}.dstat.on i{background:var(--ok)}.dstat.off i{background:var(--red)}
-.dstat button{font:inherit;font-size:.76rem;border:1px solid var(--ink);background:#fff;border-radius:4px;padding:.15rem .7rem;cursor:pointer}.dstat button:hover{background:var(--ink);color:#fff}
+.dstat button{font:inherit;font-size:1rem;border:1px solid var(--ink);background:#fff;border-radius:4px;padding:.15rem .7rem;cursor:pointer}.dstat button:hover{background:var(--ink);color:#fff}
 .th-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.6rem;align-items:end;padding:1.2rem 0 1.6rem;margin-bottom:2rem;border-bottom:2px solid var(--ink)}
 .th-no{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(4rem,10vw,7rem);line-height:.85;color:var(--red);font-variant-numeric:tabular-nums}
 .th-t{font-size:clamp(1.9rem,4vw,2.8rem);letter-spacing:.06em;line-height:1.3}
 .th-tag{margin-top:.4rem;color:var(--sub);font-size:1rem;max-width:40em}
-.th-todo{color:var(--sub);font-size:.95rem;padding:1rem 1.2rem;border:1px dashed #cfcac4;border-radius:6px}
+.th-todo{color:var(--sub);font-size:1rem;padding:1rem 1.2rem;border:1px dashed #cfcac4;border-radius:6px}
 .txt .th-todo{border:0;padding:0}
 .th-pts{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:0 2rem;border-top:2px solid var(--ink)}
-.th-pts li{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.92rem;line-height:1.5}
-.th-pts b{font-weight:700;font-size:.9rem;color:var(--red);font-variant-numeric:tabular-nums}
-.th-pts .rl{margin:0;font-size:.7rem;padding:0 .45rem;white-space:nowrap;justify-self:end;line-height:1.6}
-.rl{display:inline-block;align-self:flex-start;margin-top:auto;font-style:normal;font-size:.74rem;font-weight:500;color:var(--sub);border:1px solid var(--line);border-radius:3px;padding:.05rem .5rem}.rl.d{color:#fff;background:var(--red);border-color:var(--red)}
+.th-pts li{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:1rem;line-height:1.5}
+.th-pts b{font-weight:700;font-size:1rem;color:var(--red);font-variant-numeric:tabular-nums}
+.th-pts .rl{margin:0;font-size:1rem;padding:0 .45rem;white-space:nowrap;justify-self:end;line-height:1.6}
+.rl{display:inline-block;align-self:flex-start;margin-top:auto;font-style:normal;font-size:1rem;font-weight:500;color:var(--sub);border:1px solid var(--line);border-radius:3px;padding:.05rem .5rem}.rl.d{color:#fff;background:var(--red);border-color:var(--red)}
 .th-res{list-style:none;border-top:2px solid var(--ink)}
 .th-res li{position:relative;padding:.9rem 0 .9rem 2rem;border-bottom:1px solid var(--line);font-size:1.02rem;line-height:1.7}
-.th-res li{display:flex;gap:.9rem;align-items:baseline;padding-left:0}.th-res em{flex:none;font-style:normal;font-size:.78rem;font-weight:700;color:var(--red);background:var(--red-t);padding:.1rem .55rem;border-radius:3px;font-variant-numeric:tabular-nums}
+.th-res li{display:flex;gap:.9rem;align-items:baseline;padding-left:0}.th-res em{flex:none;font-style:normal;font-size:1rem;font-weight:700;color:var(--red);background:var(--red-t);padding:.1rem .55rem;border-radius:3px;font-variant-numeric:tabular-nums}
 .th-res li::before{display:none;content:"";position:absolute;left:.3rem;top:1.25rem;width:10px;height:10px;background:var(--red)}
 .th-nav{display:grid;grid-template-columns:1fr 1fr;gap:1rem;border-top:1px solid var(--line);padding-top:1.4rem;margin-top:1rem}
 .th-nav a{display:flex;flex-direction:column;gap:.15rem;color:var(--ink);font-weight:700;font-size:1.05rem;padding:.8rem 1rem;border:1px solid var(--line);border-radius:4px}
-.th-nav a small{font-size:.74rem;color:var(--sub);font-weight:400;letter-spacing:.08em}
+.th-nav a small{font-size:1rem;color:var(--sub);font-weight:400;letter-spacing:.08em}
 .th-nav a:hover{border-color:var(--red);color:var(--red)}
 .th-nav a.nx{text-align:right}
 @media(max-width:600px){.th-hero{grid-template-columns:1fr;gap:.4rem}.th-nav{grid-template-columns:1fr}}
 .dg{margin-bottom:2rem}
 .dg h3{display:flex;align-items:baseline;gap:.6rem;font-size:1rem;font-weight:700;padding-bottom:.5rem;border-bottom:2px solid var(--ink);margin-bottom:0}
-.dg h3 small{font-size:.76rem;font-weight:400;color:var(--sub)}
+.dg h3 small{font-size:1rem;font-weight:400;color:var(--sub)}
 .dl2{list-style:none;display:grid;gap:0 2rem}
 .dl2.two{grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr))}
-.dl2 a,.dl2 div{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;align-items:center;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line);color:var(--ink);font-size:.93rem;line-height:1.55}
-.dl2 b{color:var(--red);font-size:.86rem;font-variant-numeric:tabular-nums}
+.dl2 a,.dl2 div{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;align-items:center;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line);color:var(--ink);font-size:1rem;line-height:1.55}
+.dl2 b{color:var(--red);font-size:1rem;font-variant-numeric:tabular-nums}
 .dl2 a:hover{color:var(--red)}.dl2 a:hover .dt{background:var(--red);color:#fff;border-color:var(--red)}
-.dt{font-style:normal;font-size:.72rem;font-weight:700;white-space:nowrap;border:1px solid var(--red);color:var(--red);border-radius:3px;padding:.05rem .5rem}
+.dt{font-style:normal;font-size:1rem;font-weight:700;white-space:nowrap;border:1px solid var(--red);color:var(--red);border-radius:3px;padding:.05rem .5rem}
 .dt.off{border-color:var(--line);color:var(--sub);font-weight:400}
 .emp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:2px solid var(--ink);margin-bottom:1.2rem}
 .emp div{display:flex;flex-direction:column;gap:.3rem;padding:1.1rem 1.3rem;border-left:1px solid var(--line)}
 .emp div:first-child{border-left:0}
-.emp span{font-size:.84rem;color:var(--sub);line-height:1.5;min-height:2.6em}
+.emp span{font-size:1rem;color:var(--sub);line-height:1.5;min-height:2.6em}
 .emp b{font-family:"Noto Serif TC",serif;font-size:2.4rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
-.emp em{font-style:normal;font-size:.78rem;color:var(--sub);letter-spacing:.06em}
+.emp em{font-style:normal;font-size:1rem;color:var(--sub);letter-spacing:.06em}
 .emp .hl{background:var(--red);color:#fff}.emp .hl span,.emp .hl em{color:#fff}
-.emp-list summary{cursor:pointer;font-weight:700;font-size:.95rem;padding:.4rem 0 .6rem;border-bottom:2px solid var(--ink)}
+.emp-list summary{cursor:pointer;font-weight:700;font-size:1rem;padding:.4rem 0 .6rem;border-bottom:2px solid var(--ink)}
 .emp-list summary::marker{color:var(--red)}
 @media(max-width:700px){.emp{grid-template-columns:1fr}.emp div{border-left:0;border-top:1px solid var(--line)}.emp div:first-child{border-top:0}.emp span{min-height:0}}
-footer{background:var(--tint);border-top:1px solid var(--line);padding:1.8rem clamp(1.2rem,4vw,2.4rem);font-size:.78rem;line-height:1.9;color:var(--sub);display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.bd-term{display:inline-block;font-size:1rem;color:var(--red-d);background:var(--red-t);padding:.2rem .7rem;border-radius:3px;margin-bottom:.8rem}
+table.bd{width:100%;border-collapse:collapse;font-size:1rem}
+table.bd th{text-align:left;font-weight:700;font-size:1rem;color:var(--sub);padding:.6rem .8rem;border-bottom:2px solid var(--ink);white-space:nowrap}
+table.bd td{padding:.65rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+table.bd td:nth-child(-n+3){white-space:nowrap}
+table.bd .n{text-align:right;font-variant-numeric:tabular-nums}
+table.bf td.n{white-space:nowrap}
+table.bd tfoot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0;background:var(--red-t)}
+table.bd tr.chair td{background:var(--tint)}table.bd tr.chair td:first-child{color:var(--red);font-weight:700}
+.bt-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.8rem;border-bottom:1px solid var(--line);padding-bottom:1rem}
+.bt-tabs button{white-space:nowrap;flex:none;height:auto;line-height:1.4;font:inherit;font-size:1rem;padding:.55rem 1.1rem;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:4px;cursor:pointer}
+.bt-tabs button:hover{border-color:var(--red);color:var(--red)}
+.bt-tabs button.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.bt-pane{display:none}.bt-pane.on{display:block}
+.zz{max-width:52em}
+.zc{font-size:1.05rem;font-weight:700;margin:1.2rem 0 .6rem;padding-bottom:.4rem;border-bottom:2px solid var(--ink)}
+.za,.zk{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:.6rem;padding:.55rem 0;line-height:1.8;font-size:1rem}
+.za{border-bottom:1px solid var(--line)}.za b{color:var(--red);white-space:nowrap}
+.zk{padding:.2rem 0 .2rem 4.5rem;grid-template-columns:1.6rem minmax(0,1fr)}.zk b{color:var(--sub);font-weight:500}
+.demo-note{color:#c00000;font-weight:700;margin:.2rem 0 .6rem}
+table.demo tbody td,table.demo tbody td b{color:#c00000 !important}
+.ydiff{margin:.6rem 0 1rem}
+.yd-hint{color:var(--sub);font-size:1rem;padding:.6rem 0}
+.yd-t{font-size:1.05rem;font-weight:700;margin:.4rem 0 .6rem;display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap}
+.yd-t small{font-size:1rem;font-weight:400;color:var(--sub)}
+table.yd{width:100%;border-collapse:collapse}
+table.yd th,table.yd td{padding:.55rem .8rem;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.yd th[scope=row],table.yd thead th:first-child{text-align:left;font-weight:500}
+table.yd thead th{border-bottom:2px solid var(--ink);font-weight:700;color:var(--sub)}
+table.yd td.up{color:var(--red);font-weight:700}table.yd td.dn{color:var(--neg);font-weight:700}
+table.yd tfoot th,table.yd tfoot td{font-weight:700;background:var(--red-t);border-top:2px solid var(--ink);border-bottom:0}
+footer{background:var(--tint);border-top:1px solid var(--line);padding:1.8rem clamp(1.2rem,4vw,2.4rem);font-size:1rem;line-height:1.9;color:var(--sub);display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
 footer img{height:34px;width:34px}
 @media(max-width:900px){body{padding-left:0}.rail{display:none}.topbar .mburger{display:block}.topbar{position:sticky;top:0;z-index:45}.subnav{top:73px}.hero+.wrap .navcards{margin-top:-2.5rem}.hero .cap{display:none}}
 @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
@@ -294,7 +333,7 @@ const MASTER_ID = '1Gz5NCBJhDkDgtwZJlbhytnVFy7EgQlyVZY6ZyRY6Fvo';
    部署步驟見維護手冊；未填或失效時退回 gviz（需試算表開放檢視）→ 再退回內嵌示範資料。 */
 const GAS_URL = '';
 const CONFIG = {
-  S1:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['就業追蹤統計','就業追蹤系所','畢業生流向文件','特色具體內容','特色主題內容','特色主題對照','沿革','組織架構','學生人數','教職員人數','生師比','學生使用空間','資源概況','招生就學','新生人數','境外生','SWOT','特色主題','評鑑結果','畢業生流向','KPI','董事會財務','董事會收支','文字說明'] },
+  S1:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['董事名冊','董事酬勞','捐助章程','就業追蹤統計','就業追蹤系所','畢業生流向文件','特色具體內容','特色主題內容','特色主題對照','沿革','組織架構','學生人數','教職員人數','生師比','學生使用空間','資源概況','招生就學','新生人數','境外生','SWOT','特色主題','評鑑結果','畢業生流向','KPI','董事會財務','董事會收支','文字說明'] },
   S2:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['收支總覽','收入','支出'] },
   S3:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['收費標準','教學成本','學雜費占成本','收費與成本','支出估算','助學措施','助學統計'] },
   S4:{ id:MASTER_ID, name:'校務資訊公開資料總表', sheets:['報告清單','採購處分連結','採購案件','處分資產','資產報廢','設備效益','其他連結'] },
@@ -314,6 +353,9 @@ DATA.S1['特色具體內容']=[["主題名稱","計畫代碼","具體內容","�
 DATA.S1['畢業生流向文件']=[["分類","編號","文件名稱","連結"],["說明文件","0","校官網公開專區資料－文字及列表（114 年更新）",""],["近 7 年大學部畢業生畢業後狀況","1.1","畢業後一年狀況（106–112 學年度）",""],["近 7 年大學部畢業生畢業後狀況","1.2","畢業後三年狀況（104–110 學年度）",""],["近 7 年大學部畢業生畢業後狀況","1.3","畢業後五年狀況（102–108 學年度）",""],["畢業生「流向與校友表現」統計表","2.1","108 學年度畢業生．畢業滿五年－全校",""],["畢業生「流向與校友表現」統計表","2.2","108 學年度畢業生．畢業滿五年－大學部",""],["畢業生「流向與校友表現」統計表","2.3","108 學年度畢業生．畢業滿五年－研究所",""],["畢業生「流向與校友表現」統計表","3.1","108 學年度畢業生．畢業滿五年－各院系所",""],["畢業生「流向與校友表現」統計表","2.4","110 學年度畢業生．畢業滿三年－全校",""],["畢業生「流向與校友表現」統計表","2.5","110 學年度畢業生．畢業滿三年－大學部",""],["畢業生「流向與校友表現」統計表","2.6","110 學年度畢業生．畢業滿三年－研究所",""],["畢業生「流向與校友表現」統計表","3.2","110 學年度畢業生．畢業滿三年－各院系所",""],["畢業生「流向與校友表現」統計表","2.7","112 學年度畢業生．畢業滿一年－全校",""],["畢業生「流向與校友表現」統計表","2.8","112 學年度畢業生．畢業滿一年－大學部",""],["畢業生「流向與校友表現」統計表","2.9","112 學年度畢業生．畢業滿一年－研究所",""],["畢業生「流向與校友表現」統計表","3.3","112 學年度畢業生．畢業滿一年－各院系所",""],["畢業生主要工作行業類型（114 年）","4.1","各系所畢業生主要分布之工作行業類型－全",""],["畢業生主要工作行業類型（114 年）","4.2","各學系畢業生主要分布之工作行業類型－系",""],["畢業生主要工作行業類型（114 年）","4.3","各所畢業生主要分布之工作行業類型－所",""],["傑出校友","5","產官學界傑出校友名錄（第一屆至第十二屆）",""]];
 DATA.S1['就業追蹤系所']=[["學年度","序號","系所名稱","連結網址"],["112",1,"文化創意事業管理學系／文化創意事業管理學系碩士班","https://reurl.cc/gnNMjN"],["112",2,"企業管理學系／企業管理學系管理科學碩(博)士班／非營利事業管理碩士班","https://reurl.cc/zKoolp"],["112",3,"財務金融學系／財務管理研究所","https://reurl.cc/MMWmzX"],["112",4,"旅遊管理學系／旅遊管理碩士班","https://reurl.cc/GGQpqW"],["112",5,"國際企業學士學位學程","https://reurl.cc/3byYgR"],["112",6,"運動與健康促進學士學位學程","https://reurl.cc/dq91ag"],["112",7,"文學系(碩士班)","https://reurl.cc/AbXW7e"],["112",8,"生死學系／生死學系碩士班／生死學系哲學與生命教育碩士班","https://reurl.cc/DbYM3R"],["112",9,"幼兒教育學系(碩士班)","https://reurl.cc/rKkyXO"],["112",10,"外國語文學系","https://reurl.cc/YkmXLo"],["112",11,"宗教學研究所","https://reurl.cc/1kl6L8"],["112",12,"傳播學系(碩士班)","https://is.gd/iZ2jEa"],["112",13,"國際事務與企業學系（亞太研究碩士班／公共政策研究碩士班／歐洲研究碩士班）","https://reurl.cc/XaxVM7"],["112",14,"應用社會學／社會學碩士班／教育社會學碩士班","https://reurl.cc/Xa2on7"],["112",15,"視覺藝術與設計學系(碩士班)","https://reurl.cc/DbYzOm"],["112",16,"產品與室內設計學系(碩士班)","https://reurl.cc/9b0pKx"],["112",17,"建築與景觀學系(碩士班)","https://reurl.cc/7bY5Zb"],["112",18,"民族音樂學系(碩士班)","https://reurl.cc/ZlMEbA"],["112",19,"資訊管理學系(碩士班)","https://reurl.cc/Vmn2Db"],["112",20,"資訊工程學系","https://reurl.cc/5bX3rz"],["112",21,"自然生物科技學系／自然療癒碩士班","https://reurl.cc/VmnRNR"],["112",22,"資訊科技進修學士班","https://reurl.cc/jmaaRy"],["112",23,"永續綠色科技碩士學位學程","https://reurl.cc/oKmb7g"]];
 DATA.S1['就業追蹤統計']=[["學年度","系所總數(A)","已追蹤並公告系所數(B)"],["112",23,23]];
+DATA.S1['董事名冊']=[["類別","屆次","任期","職稱","姓名","性別","經歷","現職"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事長","釋心保","男","美國西來寺住持","佛光山寺住持"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","張優理","女","佛光山北投安國寺住持","佛光大學董事長"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","心培","男","佛光山寺住持","佛光山寺退居和尚"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","吳素真","女","佛光山寺都監院院長","國際佛光會世界總會署理會長"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","方希聖","男","普門中學副校長","佛光山寺都監院院長"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","陳淑娉","女","佛光山教育院院長","菲律賓佛光山總住持"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","胡佳君","女","佛光山叢林學院主任","佛光山圓福寺住持"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","曾美嘉","女","佛光山教育院辦公室主任","佛光山叢林學院院長"],["董事","第十一屆","自114年4月2日起至118年4月1日止","董事","江佩珊","女","佛光山法堂書記室主任","佛光山法堂書記室主任"],["監察人","","自111年12月27日起至115年12月26日止","監察人","鄭添原","男","致遠會計師事務所台北所經理","佛光山寺宗委；佛光山寺都監院二單書記"]];
+DATA.S1['捐助章程']=[["類型","編號","內容"],["標題","","財團法人南華大學捐助章程（摘要）"],["章","第一章","總則"],["條","第一條","為培育社會人才之目的，設立財團法人南華大學（以下簡稱本法人），特依私立學校法第十條第一項及學校財團法人捐助章程訂定準則之規定，訂定本章程。"],["條","第二條","本法人事務所設於嘉義縣大林鎮南華路一段 55 號，並得經學校財團法人主管機關之許可，於適當地點設立分事務所。"],["條","第三條","本法人之辦學理念為："],["款","一","創造優質的學習環境。"],["款","二","培育知書達禮、正知正見、智德兼備之社會人才。"],["款","三","培養具有專業知識、國際宏觀及創新思維之人才。"],["條","第四條","本法人依私立學校法規定設立南華大學，其地址為嘉義縣大林鎮南華路一段 55 號。"],["條","第五條","本法人設立時捐助之財產總額為新臺幣三億元及開辦費一億六千二百二十萬元（包括動產、不動產及其他產權），係由李哲朗等人捐助設立。嗣後並得繼續接受國內外之個人、法人或團體之捐贈。"],["連結","","https://nhuwebfile.nhu.edu.tw/UploadedFiles/2024/11/3f01f01c-0e9d-4e26-abbb-3e3218d39191.pdf"]];
+DATA.S1['董事酬勞']=[["學年度","職稱","姓名","出席費及交通費","專任報酬"],["113","董事長","釋○○",20000,0],["113","董事","張○○",20000,0],["113","董事","鄭○○",10000,0],["113","董事","方○○",0,0],["113","董事","吳○○",20000,0],["113","董事","心○○",0,0],["113","董事","曾○○",10000,0],["113","董事","陳○○",0,0],["113","董事","胡○○",0,0],["113","董事","江○○",10000,0],["113","監察人","鄭○○",0,0],["112","董事長","張○○",30000,0],["112","董事","吳○○",20000,0],["112","董事","鄭○○",30000,0],["112","董事","方○○",10000,0],["112","董事","心○○",10000,0],["112","董事","釋○○",20000,0],["112","董事","曾○○",0,0],["112","董事","陳○○",10000,0],["112","董事","胡○○",0,0],["112","監察人","鄭○○",0,0]];
 DATA.S1['特色主題對照']=[["代碼","重點項目","對應特色","關聯度"],["A1","強化教師的教學能力，激勵教師教學創新","智慧創新","間接"],["A2","深化新科技支持系統，涵養資訊科技能力","智慧創新","直接"],["A3","精進自主及跨域課程，提升學生跨域素養","智慧創新","直接"],["A4","以校務分析證據為本，強化教學品保機制","智慧創新","間接"],["A5","精進校務研究及管理機制，落實自我課責","智慧創新","間接"],["B1","精進三好友善校園，提升三好生命力與競爭力","三好校園","直接"],["B2","精進南華志工制度，實踐服務利他與民主素養","三好校園","直接"],["B3","優化多元輔導機制，強化學生競爭力與就業力","三好校園","間接"],["C1","深化自主學習課程與設計思考教學，提升競爭力","智慧創新","間接"],["C2","精進實習、職場體驗及證照，強化學用證賽合一","智慧創新","間接"],["C3","強化四年一貫職涯輔導機制，深化職涯關懷輔導","智慧創新","直接"],["D1","強化區域產學聯盟，促進區域產業發展","智慧創新","間接"],["D2","創新創業生態基地，強化創客實作能力","智慧創新","間接"],["D3","強化教師產學能量，提升教師實務能力","智慧創新","間接"],["D4","延攬師資獎勵研發，擴增產研發展能量","智慧創新","間接"],["D5","厚植研究資源共享，建構優質產研環境","智慧創新","間接"],["D6","優化多元評鑑機制，激發教師研究動能","智慧創新","間接"],["E1","深化生命教育至各校，提升南華校園生命教育影響力","生命教育","直接"],["E2","拓展生命教育到社會，朝向國際級生命教育典範大學","生命教育","直接"],["E3","推展環境永續到國際，擴展南華環境永續發展影響力","環境永續","直接"],["E4","創設實踐專責的基地，以落實大學社會責任與實踐力","環境永續","直接"],["E5","推動綠色的行動辦公，邁向南華碳中和的綠色生活","環境永續","直接"],["E6","深化青銀共學的場域，促進青銀、校園及社會的共榮","生命教育","間接"],["E7","強化各類的風險管理，建構韌性校園與全面品質管理","環境永續","間接"],["F1","結合佛光山系統資源，提升國際競爭力","三好校園","間接"],["F2","強化 EMI 教學與學習，塑造國際化校園","智慧創新","間接"],["F3","促進海外學習與交流，讓南華走向世界","智慧創新","間接"],["F4","構建國際化友善校園，讓世界走向南華","三好校園","間接"],["G1","建調身心靈健康、體育組織與課程，深耕南華學生身心靈更健康","生命教育","間接"],["G2","創設師生健康運動護照與樂活日，促使南華教職員身心靈更健康","生命教育","間接"],["G3","應用物聯網與精準化培訓，引領雲嘉青年與高齡者身心靈更健康","生命教育","間接"]];
 /* 需固定使用內建資料、不讀試算表的分頁名稱放這裡（預設全部以 Google 試算表為準） */
 const PINNED=new Set([]);
@@ -447,6 +489,7 @@ function interactive(cid, o){ // o:{key,sheet,unit,type,percent,stack}
       <span class="chip ${st.type==='line'?'on':''}" onclick="setType('${cid}','line')">折線</span></div>
   </div>
   <div class="chart" id="${cid}"></div>
+  <div class="ydiff" id="${cid}-diff"></div>
   ${detailsOf(o.key,o.sheet)}`;
 }
 function detailsOf(k,n){
@@ -464,6 +507,7 @@ function setType(cid,t){ INTER[cid].type=t; refreshCtrl(cid); drawInter(cid); }
 function refreshCtrl(cid){
   const el=document.getElementById(cid); if(!el) return;
   const holder=el.previousElementSibling; // .ctrl
+  if(!holder||!holder.classList.contains('ctrl')) return;
   const st=INTER[cid], o=st.o;
   const ys=yearsOf(o.key,o.sheet), sers=rows(o.key,o.sheet).map(r=>String(r[0]));
   const chips=(list,set,kind)=>list.map(v=>
@@ -481,8 +525,8 @@ function drawInter(cid){
   const ys=ysAll.filter(y=>st.years.has(y));
   const idx=ys.map(y=>ysAll.indexOf(y));
   const sers=rows(o.key,o.sheet).filter(r=>st.sers.has(String(r[0])));
-  const opt={...ANIM,color:PALETTE,tooltip:{trigger:'axis'},legend:{bottom:0},
-    grid:{left:56,right:20,top:36,bottom:56},
+  const opt={...ANIM,color:PALETTE,tooltip:{trigger:'axis'},legend:{top:0,left:'center',itemGap:14,textStyle:{fontSize:16}},
+    grid:{left:12,right:20,top:sers.length>6?78:48,bottom:12,containLabel:true},
     xAxis:{type:'category',data:ys},
     yAxis:{type:'value',scale:!!o.scale,splitLine:{lineStyle:{color:'#eee'}},
       axisLabel:o.percent?{formatter:'{value}%'}:{}},
@@ -493,6 +537,21 @@ function drawInter(cid){
   let c = echarts.getInstanceByDom(document.getElementById(cid));
   if(!c){ c = echarts.init(document.getElementById(cid)); charts.push(c); }
   c.setOption(opt, true);
+  drawDiff(cid, ys, idx, sers, o);
+}
+function drawDiff(cid, ys, idx, sers, o){
+  const box=document.getElementById(cid+'-diff'); if(!box) return;
+  if(ys.length!==2){ box.innerHTML = ys.length>2?'<p class="yd-hint">只選兩個學年度時，會顯示兩年度的差距比較</p>':''; return; }
+  const [a,b]=ys, n=v=>+String(v??'').replace(/[^\d.-]/g,'')||0;
+  const f=v=>(Math.round(v*10)/10).toLocaleString('zh-TW');
+  const unit=o.percent?'百分點':(o.unit||'');
+  let ta=0,tb=0;
+  const tr=sers.map(r=>{const x=n(r[idx[0]+1]),y=n(r[idx[1]+1]),d=y-x;ta+=x;tb+=y;
+    const p=x?d/Math.abs(x)*100:null, cls=d>0?'up':d<0?'dn':'';
+    return `<tr><th scope="row">${r[0]}</th><td>${f(x)}</td><td>${f(y)}</td><td class="${cls}">${d>0?'▲ +':d<0?'▼ ':''}${f(d)}</td><td class="${cls}">${p==null||o.percent?'–':(p>0?'+':'')+p.toFixed(1)+'%'}</td></tr>`}).join('');
+  const td=tb-ta, tp=ta?td/Math.abs(ta)*100:null, tc=td>0?'up':td<0?'dn':'';
+  const tot=(!o.percent&&sers.length>1)?`<tfoot><tr><th scope="row">合計</th><td>${f(ta)}</td><td>${f(tb)}</td><td class="${tc}">${td>0?'▲ +':td<0?'▼ ':''}${f(td)}</td><td class="${tc}">${tp==null?'–':(tp>0?'+':'')+tp.toFixed(1)+'%'}</td></tr></tfoot>`:'';
+  box.innerHTML=`<h3 class="yd-t">${a} → ${b} 差距比較${unit?`<small>（單位：${unit}）</small>`:''}</h3><div class="tscroll"><table class="yd"><thead><tr><th scope="col">項目</th><th scope="col">${a}</th><th scope="col">${b}</th><th scope="col">增減</th><th scope="col">增減率</th></tr></thead><tbody>${tr}</tbody>${tot}</table></div>`;
 }
 
 /* ============ 選單 ============ */
@@ -506,6 +565,7 @@ const NAV = [
   {id:'s6', label:'陸、意見回饋', pages:['6-1']},
 ];
 const themeList = ()=> rows('S1','特色主題').filter(r=>String(r[0]).trim() && String(r[0]).trim()!=='慢食慢活與有機生產');
+window.bdTab=(b,i)=>{const w=b.closest('.wrap')||document;w.querySelectorAll('.bt-tabs button').forEach((x,j)=>x.classList.toggle('on',j===i));w.querySelectorAll('.bt-pane').forEach((x,j)=>x.classList.toggle('on',j===i));};
 const TITLES = {
  '1-1':'學校沿革','1-2':'組織架構','1-3':'基本數據及趨勢',
  '1-5':'學校特色與發展願景','1-6':'特色主題專區','1-7':'學校績效表現','1-9':'董事會相關資訊',
@@ -538,9 +598,14 @@ function pageShell({key, section, ref, fallbackDesc, bodyHTML, owner, badge, sou
 
   </div>`;
 }
+const DEMO = new Set(['S4:設備效益','S6:意見回應','S1:董事酬勞']);
+const DEMO_SNAP = Object.fromEntries([...DEMO].map(x=>{const [k,n]=x.split(':');return [x,JSON.stringify((DATA[k]&&DATA[k][n]||[]).slice(1).map(r=>r.map(String)))]}));
+const isDemo = (k,n)=> DEMO.has(k+':'+n) && JSON.stringify(rows(k,n).map(r=>r.map(String)))===DEMO_SNAP[k+':'+n];
+const demoNote = '<p class="demo-note">※ 紅字為示範資料，正式公開前請更新</p>';
 function tbl(k,n,map,negCols=[]){
   const body = rows(k,n).map(map || (r=>r.map(fmt)));
-  return `<div class="tscroll"><table><thead><tr>${heads(k,n).map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead>
+  const dm = isDemo(k,n) || rows(k,n).some(r=>/（示範）/.test(r.join('')));
+  return `${dm?demoNote:''}<div class="tscroll"><table${dm?' class="demo"':''}><thead><tr>${heads(k,n).map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead>
   <tbody>${body.map(r=>`<tr>${r.map((c,i)=>`<td${negCols.includes(i)&&String(c).startsWith('-')?' class="neg"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${csvLink(n)}`;
 }
 
@@ -589,7 +654,7 @@ home(){
   const bigCls = /^[\d,\.\s]+$/.test(big) ? 'big' : 'big txt';
   return `
   <div class="hero">
-    <img class="campus" src="campus.png" alt="南華大學校景" onerror="this.remove()">
+    <img class="campus" src="campus.jpg" alt="南華大學校景" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='campus.png'}else this.remove()">
     <div class="grad"></div>
     <div class="inner">
       <div class="${bigCls}">${big}<small>${label}</small></div>
@@ -620,7 +685,7 @@ home(){
   return pageShell({key:'1-2',section:'校務資訊說明',ref:{file:'S1',sheet:'組織架構'},source:'資料來源：112-116學年度校務發展計畫',badge:'115學年度',
     fallbackDesc:'',
     bodyHTML:`<section class="blk"><h2>組織架構圖（115學年度）</h2>
-      <p style="font-size:.82rem;color:var(--sub);margin-bottom:.6rem">可點選節點收合／展開、拖曳與縮放，右上角可切換深淺色。
+      <p style="font-size:1rem;color:var(--sub);margin-bottom:.6rem">可點選節點收合／展開、拖曳與縮放，右上角可切換深淺色。
         <a href="org.html" target="_blank" rel="noopener">另開全螢幕檢視 ↗</a></p>
       <iframe src="org.html" title="南華大學組織架構圖" loading="lazy"
         style="width:100%;height:880px;border:1px solid var(--line);border-radius:10px;background:#f5f6f8"></iframe>
@@ -652,7 +717,7 @@ home(){
 '1-6'(){ return pageShell({key:'1-6',section:'校務資訊說明',ref:{file:'S1',sheet:'特色主題'},source:'資料來源：112-116學年度校務發展計畫',
   bodyHTML:`<div class="navcards" style="margin-top:0">${themeList().map((r,i)=>{
     const inner = `<div class="no">主題 ${i+1}</div><h3>${r[0]}</h3><p>${r[1]||''}</p>`;
-    return `<a class="navcard" href="#/1-6-${i+1}">${inner}<p style="margin-top:auto;padding-top:.8rem;color:var(--red);font-size:.8rem;font-weight:500">了解更多</p></a>`;
+    return `<a class="navcard" href="#/1-6-${i+1}">${inner}<p style="margin-top:auto;padding-top:.8rem;color:var(--red);font-size:1rem;font-weight:500">了解更多</p></a>`;
   }).join('')}</div>`});},
 themePage(n){
   const list = themeList(), r = list[n-1]; if(!r) return PAGES['1-6']();
@@ -666,7 +731,7 @@ themePage(n){
     <div class="crumb"><a href="#/1-6">特色主題專區</a>｜主題 ${n}</div>
     <div class="th-hero"><span class="th-no">${String(n).padStart(2,'0')}</span><div><h1 class="th-t">${name}</h1><p class="th-tag">${ov[0]||r[1]||''}</p></div></div>
     <section class="blk"><h2>對應 112–116 學年度校務發展計畫項目（共 ${map.length} 項）</h2>${map.length?`<ol class="th-pts">${map.map(x=>`<li><b>${x[2]}</b><span>${x[3]}</span>${x[4]?`<i class="rl ${x[4]==='直接'?'d':''}">${x[4]}相關</i>`:''}</li>`).join('')}</ol>`:todo}</section>
-    <section class="blk"><h2>具體內容</h2>${res.length?`<ul class="th-res">${res.map(x=>`<li>${x[2]?`<em>${x[2]}</em>`:''}<span>${x[3]}${x[4]?` <a href="${x[4]}" target="_blank" rel="noopener" style="white-space:nowrap;font-size:.86rem">相關連結 ↗</a>`:''}</span></li>`).join('')}</ul>`:todo}</section>
+    <section class="blk"><h2>具體內容</h2>${res.length?`<ul class="th-res">${res.map(x=>`<li>${x[2]?`<em>${x[2]}</em>`:''}<span>${x[3]}${x[4]?` <a href="${x[4]}" target="_blank" rel="noopener" style="white-space:nowrap;font-size:1rem">相關連結 ↗</a>`:''}</span></li>`).join('')}</ul>`:todo}</section>
     <nav class="th-nav" aria-label="其他主題">${prev?`<a href="#/1-6-${n-1}"><small>上一個主題</small>← ${prev[0]}</a>`:'<span></span>'}${next?`<a class="nx" href="#/1-6-${n+1}"><small>下一個主題</small>${next[0]} →</a>`:`<a class="nx" href="#/1-6"><small>返回</small>特色主題專區 →</a>`}</nav>
   </div>`;
 },
@@ -701,10 +766,38 @@ themePage(n){
 },
 
 '1-9'(){ return pageShell({key:'1-9',section:'校務資訊說明',ref:{file:'S1',sheet:'董事會財務'},
-  fallbackDesc:'<p>董事名單經歷、捐助章程、董事會財務資訊與每筆逾 10 萬元收支。</p>',
-  bodyHTML:`
-  <section class="blk"><h2>董事會財務資訊</h2>${tbl('S1','董事會財務')}</section>
-  <section class="blk"><h2>每筆逾 10 萬元收支</h2>${tbl('S1','董事會收支')}</section>`,
+  fallbackDesc:'<p>董事名單經歷、捐助章程與董事會財務資訊。</p>',
+  bodyHTML:`<div class="bt-tabs" role="tablist"><button class="on" onclick="bdTab(this,0)">(1) 董事名單及個人經歷</button><button onclick="bdTab(this,1)">(2) 董事會捐助章程</button><button onclick="bdTab(this,2)">(3) 董事會財務資訊</button></div>
+  <div class="bt-pane on">${(()=>{
+    const all=rows('S1','董事名冊').filter(r=>String(r[4]||'').trim());
+    const grp=[...new Set(all.map(r=>String(r[0]).trim()))];
+    return grp.map(g=>{const L=all.filter(r=>String(r[0]).trim()===g),f=L[0];
+      const title=g==='監察人'?'財團法人南華大學董事會監察人名冊':`財團法人南華大學董事會${f[1]||''}董事名冊`;
+      return `<section class="blk"><h2>${title}</h2><p class="bd-term">任期：${f[2]||''}</p>
+      <div class="tblwrap"><table class="bd"><thead><tr><th>職稱</th><th>姓名</th><th>性別</th><th>經歷</th><th>現職</th></tr></thead><tbody>
+      ${L.map(r=>`<tr class="${/長$/.test(r[3])?'chair':''}"><td>${r[3]}</td><td><b>${r[4]}</b></td><td>${r[5]}</td><td>${r[6]}</td><td>${String(r[7]||'').split(/[；;]/).join('<br>')}</td></tr>`).join('')}
+      </tbody></table></div></section>`}).join('');
+  })()}</div>
+  <div class="bt-pane">${(()=>{
+    const Z=rows('S1','捐助章程').filter(r=>String(r[0]).trim());
+    const T=Z.find(r=>r[0]==='標題'), L=Z.find(r=>r[0]==='連結'&&String(r[2]||'').trim());
+    const body=Z.filter(r=>['章','條','款'].includes(String(r[0]).trim())).map(r=>{const t=String(r[0]).trim();
+      return t==='章'?`<h3 class="zc">${r[1]}　${r[2]}</h3>`:t==='條'?`<div class="za"><b>${r[1]}</b><p>${r[2]}</p></div>`:`<div class="zk"><b>${r[1]}</b><p>${r[2]}</p></div>`}).join('');
+    return `<section class="blk"><h2>${T?T[2]:'財團法人南華大學捐助章程'}</h2>${L?`<p style="margin-bottom:1rem"><a href="${L[2]}" target="_blank" rel="noopener">查看完整捐助章程 ↗</a></p>`:''}<div class="zz">${body||'<p class="th-todo">內容待補充</p>'}</div></section>`;
+  })()}</div>
+  <div class="bt-pane">${(()=>{
+    const all=rows('S1','董事酬勞').filter(r=>String(r[2]||'').trim());
+    const yrs=[...new Set(all.map(r=>String(r[0]).trim()))].sort((a,b)=>b-a);
+    const cn=['一','二','三','四','五','六'], num=v=>+String(v||0).replace(/[^\d.-]/g,'')||0;
+    const m=v=>v?v.toLocaleString('zh-TW'):'–';
+    if(!yrs.length) return `<section class="blk"><h2>董事會財務資訊</h2>${tbl('S1','董事會財務')}</section>`;
+    return yrs.map((y,i)=>{const L=all.filter(r=>String(r[0]).trim()===y);let a=0,b=0;const dm=isDemo('S1','董事酬勞');
+      const tr=L.map(r=>{const x=num(r[3]),z=num(r[4]);a+=x;b+=z;return `<tr class="${/長$/.test(r[1])?'chair':''}"><td>${r[1]}</td><td>${r[2]}</td><td class="n">${m(x)}</td><td class="n">${m(z)}</td><td class="n"><b>${m(x+z)}</b></td></tr>`}).join('');
+      return `<section class="blk"><h2>（${cn[i]||i+1}）${y} 學年度董事會財務資訊</h2><p class="bd-term">總計 ${(a+b).toLocaleString('zh-TW')} 元</p>
+      <div class="tblwrap">${dm?demoNote:''}<table class="bd bf${dm?' demo':''}"><thead><tr><th>職稱</th><th>姓名</th><th class="n">出席費及交通費</th><th class="n">專任報酬</th><th class="n">合計</th></tr></thead><tbody>${tr}</tbody>
+      <tfoot><tr><td colspan="2">總計</td><td class="n">${a.toLocaleString('zh-TW')}</td><td class="n">${m(b)}</td><td class="n">${(a+b).toLocaleString('zh-TW')}</td></tr></tfoot></table></div><p style="font-size:1rem;color:var(--sub);margin-top:.5rem">單位：新臺幣元</p></section>`}).join('');
+  })()}
+  </div>`,
   owner:'董事會秘書處'});},
 
 '2-1'(){
@@ -719,8 +812,8 @@ themePage(n){
     owner:'會計室'});
   setTimeout(()=>{
     const c = echarts.init(document.getElementById('c21')); charts.push(c);
-    c.setOption({...ANIM,tooltip:{trigger:'axis'},legend:{bottom:0},
-      grid:{left:56,right:56,top:40,bottom:56},
+    c.setOption({...ANIM,tooltip:{trigger:'axis'},legend:{top:0},
+      grid:{left:12,right:12,top:44,bottom:12,containLabel:true},
       xAxis:{type:'category',data:ys},
       yAxis:[{type:'value',name:'萬元',splitLine:{lineStyle:{color:'#eee'}}},
              {type:'value',name:'差額',position:'right',splitLine:{show:false}}],
@@ -729,7 +822,7 @@ themePage(n){
         {name:'總支出',type:'bar',data:exp,itemStyle:{color:'#e0a63b'},barMaxWidth:44},
         {name:'收支差額',type:'line',yAxisIndex:1,data:diff,symbolSize:10,
          lineStyle:{width:3,color:'#3d8fb8'},itemStyle:{color:'#3d8fb8'},
-         label:{show:true,color:'#2a6f94',fontWeight:'bold'}}]});
+         label:{show:true,position:'top',distance:10,color:'#fff',fontWeight:'bold',backgroundColor:'#1f5f80',borderRadius:4,padding:[4,8],formatter:p=>Number(p.value).toLocaleString('zh-TW')}}]});
   });
   return html;
 },
@@ -742,7 +835,7 @@ themePage(n){
   noDesc:true,desc:'<p>本校各學院大學部及研究所每生收費標準如下表所示，本校自 92 學年度起皆未調漲學雜費。</p>',badge:'113學年度',
   bodyHTML:`<section class="blk"><h2>112、113 學年度各學院每生收費標準（元）</h2>${tbl('S3','收費標準',r=>r.map(fmt))}</section>
   <section class="blk"><h2>113 學年度學校及各學院每生平均教學成本</h2><p style="margin-bottom:.4rem">全校教學成本為 9 億 8,944 萬元。</p>${tbl('S3','教學成本',r=>r.map(fmt))}
-  <ol style="font-size:.84rem;color:var(--sub);margin-top:.8rem;padding-left:1.3rem;line-height:1.85"><li>教學成本＝教學研究及訓輔支出＋行政管理支出＋獎助學金支出＋圖書期刊（當年增加數）。</li><li>教學成本除可歸屬各學院經費列為該學院之成本，其餘均以該院學生人數占全校學生人數之比率分攤。</li><li>學生人數：114 年 10 月報部人數（含學士班、碩士（專）班、博士班，不含延畢生）。</li></ol></section>
+  <ol style="font-size:1rem;color:var(--sub);margin-top:.8rem;padding-left:1.3rem;line-height:1.85"><li>教學成本＝教學研究及訓輔支出＋行政管理支出＋獎助學金支出＋圖書期刊（當年增加數）。</li><li>教學成本除可歸屬各學院經費列為該學院之成本，其餘均以該院學生人數占全校學生人數之比率分攤。</li><li>學生人數：114 年 10 月報部人數（含學士班、碩士（專）班、博士班，不含延畢生）。</li></ol></section>
   <section class="blk"><h2>113 學年度學校及各學院每生學雜費標準占平均教學成本比率</h2>${tbl('S3','學雜費占成本',r=>r.map(fmt))}</section>`,
   owner:'教務處／會計室'});},
 
@@ -804,10 +897,10 @@ themePage(n){
     fallbackDesc:'',
     bodyHTML:`
     <section class="blk"><h2>辦理新臺幣 100 萬元以上採購案件一覽表</h2>
-      <p style="font-size:.92rem;margin-bottom:.4rem">揭露近 3 學年學校重大採購名稱、採購品項、辦理方式、得標廠商、採購金額及是否接受政府補助等資訊。</p>
+      <p style="font-size:1rem;margin-bottom:.4rem">揭露近 3 學年學校重大採購名稱、採購品項、辦理方式、得標廠商、採購金額及是否接受政府補助等資訊。</p>
       ${list('採購','辦理 100 萬元以上採購案件一覽表')}</section>
     <section class="blk"><h2>處分土地及重大資產案件一覽表</h2>
-      <p style="font-size:.92rem;margin-bottom:.4rem">本校無處分資產</p></section>
+      <p style="font-size:1rem;margin-bottom:.4rem">本校無處分資產</p></section>
     <section class="blk"><h2>重大設備效益追蹤</h2>
       ${tbl('S4','設備效益',r=>[r[0],r[1],fmt(r[2]),r[3],r[4]])}</section>`});
 },
@@ -817,7 +910,7 @@ themePage(n){
   return pageShell({key:'4-4',section:'學校其他重要資訊',ref:{file:'S4',sheet:'其他連結'},noDesc:true,
     desc:'<p>本校自 102 學年度開始推動課程革新，參酌國內外課程革新經驗，經半年檢視、調整、分析與創新，提出「三化成果導向課程模式」，即模組化、學程化及分流化的成果導向課程模式。課程學程化將學習的龐雜課程和新興學科重新安排，劃分成不同階段的學程，如系核心學程、跨領域就業導向學程、專業選修學程等。</p><p>具體來說，課程學程化的規劃方式為因應產業需求及學術發展，整合教學資源，建置以學生為導向之專業化精實課程，以強化學生學習深度與廣度，創造優質、多元、具彈性與跨領域的學習環境，以增強學生之軟實力，讓吸收學問之導向明確，強化精要該學科領域之核心學識，學生可依個別興趣或結合生涯規劃自由運用，同時也增加了修讀雙主修和輔修的空間，學生與利害關係人均可於本校網頁查詢相關開課與師資資訊。</p>',
     bodyHTML:`<section class="blk"><h2>開課與師資查詢</h2><ul class="rel">${links.map(([t,u])=>
-      `<li><a href="${u}" target="_blank" rel="noopener"><span>${t}<small style="display:block;font-size:.78rem;color:var(--sub);font-weight:400">${u}</small></span><b aria-hidden="true">↗</b></a></li>`).join('')}</ul></section>`});
+      `<li><a href="${u}" target="_blank" rel="noopener"><span>${t}<small style="display:block;font-size:1rem;color:var(--sub);font-weight:400">${u}</small></span><b aria-hidden="true">↗</b></a></li>`).join('')}</ul></section>`});
 },
 
 '4-5'(){ return pageShell({key:'4-5',section:'學校其他重要資訊',ref:{file:'S4',sheet:'其他連結'},
@@ -890,9 +983,9 @@ function finPage(key, kind){
       tooltip:{formatter:p=>`${p.name}<br>${p.value.toLocaleString('zh-Hant')} 萬元（${p.percent.toFixed(2)}%）`},
       legend:{type:'scroll',bottom:0},
       series:[{type:'pie',radius:['42%','68%'],center:['50%','45%'],avoidLabelOverlap:true,itemStyle:{borderColor:'#fff',borderWidth:2},
-        label:{formatter:p=>`${p.name}\n${p.percent.toFixed(2)}%`,fontSize:12,lineHeight:16},
+        label:{formatter:p=>`${p.name}\n${p.percent.toFixed(2)}%`,fontSize:16,lineHeight:16},
         data:rs.map(r=>({name:String(r[0]),value:+r[li]||0}))},
-        {type:'pie',radius:[0,0],center:['50%','45%'],label:{show:true,position:'center',formatter:`${latest}\n總${kind}\n${(total/10000).toFixed(2)} 億元`,fontSize:14,fontWeight:'bold',lineHeight:22,color:'#1a1a1a'},data:[{value:1}],tooltip:{show:false}}]});
+        {type:'pie',radius:[0,0],center:['50%','45%'],label:{show:true,position:'center',formatter:`${latest}\n總${kind}\n${(total/10000).toFixed(2)} 億元`,fontSize:16,fontWeight:'bold',lineHeight:22,color:'#1a1a1a'},data:[{value:1}],tooltip:{show:false}}]});
   });
   return html;
 }
@@ -919,7 +1012,7 @@ addEventListener('hashchange', render);
 addEventListener('resize', ()=>charts.forEach(c=>c.resize()));
 addEventListener('keydown', e=>{ if(e.key==='Escape') toggleMenu(false); });
 function showStatus(){
-  const el=document.getElementById('dataStatus'); if(!el) return;
+  const el=document.getElementById('dataStatus'); if(el) el.remove(); return;
   const t=new Date().toLocaleTimeString('zh-Hant',{hour:'2-digit',minute:'2-digit'});
   const ok=LOADED.size>0;
   el.className='dstat '+(ok?'on':'off');
