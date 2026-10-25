@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google 試算表維護手冊｜南華大學校務資訊公開專區</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#2f8256;--ink:#1a1a1a;--sub:#5c5c5c;--line:#e1e9e2;--tint:#f3f8f2;--ok:#2f7d4f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans TC",sans-serif;color:var(--ink);line-height:1.85;background:#fff;text-wrap:pretty}
+a{color:var(--red)}a:hover{color:#1f6140}
+.wrap{max-width:860px;margin:0 auto;padding:3rem clamp(1.2rem,4vw,2.4rem) 4rem}
+header{display:flex;align-items:center;gap:1rem;padding-bottom:1.2rem;border-bottom:2px solid var(--ink);margin-bottom:2rem}
+header img{width:52px;height:52px}
+h1{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:.04em;line-height:1.35}
+header p{font-size:.85rem;color:var(--sub)}
+h2{display:flex;align-items:center;gap:.7rem;font-size:1.25rem;margin:2.6rem 0 1rem}
+h2 b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:.9rem;flex:none}
+p,li{font-size:1rem}
+ol.steps{padding-left:1.4rem;display:grid;gap:.5rem}
+.note{background:var(--tint);border-radius:6px;padding:1rem 1.3rem;margin:1rem 0;font-size:.95rem}
+.note.warn{background:#e6f3ea}
+.note strong{color:var(--red)}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--tint);padding:.1em .4em;border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin:.8rem 0}
+th{background:var(--tint);border-bottom:2px solid var(--ink);text-align:left;padding:.55rem .7rem}
+td{border-bottom:1px solid var(--line);padding:.55rem .7rem;vertical-align:top}
+.dl{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0}
+.dl a{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--ink);color:var(--ink);text-decoration:none;padding:.5rem 1.1rem;border-radius:4px;font-weight:500}
+.dl a:hover{background:var(--ink);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><img src="logo.png" alt=""><div><h1>Google 試算表維護手冊</h1><p>南華大學校務資訊公開專區｜資料更新流程</p></div></header>
+<p>網站所有數據、表格與文字說明皆讀取自<strong>一份 Google 試算表</strong>。各單位只要編修試算表，網站約 1 分鐘內自動更新，不需修改網頁程式。</p>
+<div class="dl"><a href="sheet-template.xlsx" download>⬇ 下載資料總表範本（xlsx，含目前全部資料）</a><a href="Code.gs" download>⬇ 下載資料服務程式（Code.gs）</a><a href="index.html">← 回校務資訊公開專區</a></div>
+
+<h2><b>1</b>匯入資料總表（首次設定）</h2>
+<ol class="steps">
+<li>開啟網站目前使用的 Google 試算表（ID 記於 <code>index.html</code> 的 <code>MASTER_ID</code>）。</li>
+<li>選單「檔案 → 匯入 → 上傳」，選擇 <code>sheet-template.xlsx</code>。</li>
+<li>匯入位置選「<strong>取代試算表</strong>」，按「匯入資料」。</li>
+<li>右上「共用」→ 一般存取權設為「知道連結的任何人：檢視者」（若改用第 3 步的資料服務，可維持「限制」）。</li>
+<li>回網站，頁尾顯示綠點「資料來源：Google 試算表」即完成。</li>
+</ol>
+<div class="note warn"><strong>重要：</strong>範本已含 111–113 學年度財務決算數、115 學年度校務資料與收費標準等最新內容。尚未匯入前，線上試算表的舊資料（含示範財務數字）會覆蓋網站，請務必先完成本步驟。</div>
+
+<h2><b>2</b>日常資料更新</h2>
+<table>
+<thead><tr><th>要做的事</th><th>操作方式</th></tr></thead>
+<tbody>
+<tr><td>新增學年度</td><td>在表格最右側新增一欄，標題填「116學年度」格式。網站自動只顯示最新 3 個學年度，舊欄可保留。</td></tr>
+<tr><td>修改數字</td><td>直接改儲存格。數值不加千分位、不加單位文字；比率填小數（0.295 → 顯示 29.5%）。</td></tr>
+<tr><td>新增報告、評鑑、採購連結</td><td>在表格新增一列；「學年度」欄填數字（如 114），網站自動由新到舊排序。</td></tr>
+<tr><td>連結</td><td>貼上完整網址（https://…）即成超連結；留空顯示「—」或「連結待補」。</td></tr>
+<tr><td>文字說明</td><td>「文字說明」分頁兩欄：頁碼（如 1-1）／段落，一列一段。</td></tr>
+<tr><td>確認更新</td><td>存檔後約 1 分鐘，網頁頁尾按「重新讀取」。</td></tr>
+</tbody>
+</table>
+<div class="note"><strong>不可更改：</strong>分頁名稱、各表第 1 列（標題列）的第一格。網站以這兩者辨識資料；若找不到對應分頁，會自動改用網頁內建資料，不會顯示錯誤內容。</div>
+
+<h2><b>3</b>（建議）部署資料服務，保護原始檔</h2>
+<p>部署後網站改由資料服務一次取回所有公開分頁，試算表可設為「限制」，外界無法開啟或下載原始檔，並提供各表 CSV 下載。</p>
+<ol class="steps">
+<li>在試算表選單「擴充功能 → Apps Script」。</li>
+<li>刪除預設內容，貼上 <code>Code.gs</code> 全部內容，存檔。</li>
+<li>右上「部署 → 新增部署作業」，類型選「網頁應用程式」；執行身分「我」，存取權「所有人」，按「部署」並授權。</li>
+<li>複製「網頁應用程式網址」（…/exec），貼入 <code>index.html</code> 的 <code>const GAS_URL = '';</code> 引號內。</li>
+<li>（選用）Apps Script 左側「觸發條件」新增：函式 <code>onEdit</code>、事件「試算表 → 編輯時」，讓修改立即生效。</li>
+<li>試算表共用設回「限制」。</li>
+</ol>
+<div class="note">只有 <code>Code.gs</code> 中 <code>PUBLIC_SHEETS</code> 列出的分頁會對外公開；「說明」或內部工作分頁不會被讀取。新增公開分頁時，記得同時加入此清單。</div>
+
+<h2><b>4</b>分頁與網頁對照</h2>
+<table>
+<thead><tr><th>網頁</th><th>試算表分頁</th></tr></thead>
+<tbody>
+<tr><td>學校沿革／組織架構</td><td>沿革、組織架構</td></tr>
+<tr><td>基本數據及趨勢</td><td>學生人數、教職員人數、生師比、學生使用空間、資源概況</td></tr>
+<tr><td>學校特色與發展願景／特色主題</td><td>SWOT、特色主題、特色主題內容（概述、對應計畫項目）、特色具體內容（各主題具體內容，一列一條）</td></tr>
+<tr><td>學校績效表現</td><td>畢業生流向、評鑑結果</td></tr>
+<tr><td>董事會相關資訊</td><td>董事會財務、董事會收支</td></tr>
+<tr><td>收支總覽／收入分析／支出分析</td><td>收支總覽、收入、支出（單位：萬元）</td></tr>
+<tr><td>收費標準與教學成本</td><td>收費標準、教學成本、學雜費占成本</td></tr>
+<tr><td>教育支出估算／助學措施／助學統計</td><td>支出估算、助學措施、助學統計</td></tr>
+<tr><td>會計師查核報告／採購及處分／其他</td><td>報告清單、採購處分連結、設備效益、其他連結</td></tr>
+<tr><td>內部控制制度／稽核計畫與報告</td><td>文件清單、稽核清單</td></tr>
+<tr><td>意見回饋</td><td>意見回應</td></tr>
+</tbody>
+</table>
+
+<h2><b>5</b>疑難排解</h2>
+<table>
+<tbody>
+<tr><td>頁尾顯示紅點「內建資料」</td><td>試算表未開放檢視，或資料服務網址錯誤。檢查第 1 步共用設定或第 3 步網址。</td></tr>
+<tr><td>改了資料網站沒變</td><td>等候 1 分鐘後按「重新讀取」；確認改的是第 1 列以下的資料列、分頁名稱未被更動。</td></tr>
+<tr><td>某表顯示舊資料</td><td>該分頁最新學年度若比網頁內建資料舊，網站會保留較新的內建資料；請在試算表補上最新學年度。</td></tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>
